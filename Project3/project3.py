@@ -137,16 +137,18 @@ try:
         cv2.imshow('RealSense', images)
         cv2.waitKey(1)
 
-        if(initDistance < distance):
+        if(initDistance > distance):
             motors += 200
             if(motors >7900):
                    motors = 7900
             tango.setTarget(MOTORS,motors)
-        elif(initDistance > distance):
+            print("moving forwards")
+        elif(initDistance < distance):
             motors -= 200
             if(motors < 1510):
                 motors = 1510
             tango.setTarget(MOTORS,motors)
+            print("moving backwards")
             
 
 
