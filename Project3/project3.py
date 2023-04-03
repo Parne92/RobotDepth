@@ -122,6 +122,7 @@ try:
 
         print (depth_frame.get_distance( math.floor((bbox[0]+bbox[2])/2), math.floor((bbox[1]+bbox[3])/2) )*100)
         frame = 0
+        initDistance = 0
         if frame == 1:
             initDistance= depth_frame.get_distance( math.floor((bbox[0]+bbox[2])/2), math.floor((bbox[1]+bbox[3])/2) )
         frame + 1
