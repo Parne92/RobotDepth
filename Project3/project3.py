@@ -126,7 +126,7 @@ try:
 
         xCoord = (bbox[0] + bbox[2]/2)
         xCoord = math.floor(xCoord)
-        yCoord = (bbox[1]+ bbox[4]/2)
+        yCoord = (bbox[1]+ bbox[3]/2)
         yCoord = math.floor(yCoord)
         if frame == 1:
             initDistance= depth_frame.get_distance(xCoord,yCoord )
