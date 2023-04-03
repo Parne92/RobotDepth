@@ -12,6 +12,14 @@ import numpy as np
 import cv2
 import time
 import math
+from maestro import Controller                                                     
+
+MOTORS = 1
+TURN = 2
+
+tango = Controller()
+motors = 6000
+turns = 6000
 
 # Configure depth and color streams
 pipeline = rs.pipeline()
@@ -113,10 +121,28 @@ try:
 
 
         print (depth_frame.get_distance( math.floor((bbox[0]+bbox[2])/2), math.floor((bbox[1]+bbox[3])/2) )*100)
+        frame = 0
+        if frame == 1:
+            initDistance= depth_frame.get_distance( math.floor((bbox[0]+bbox[2])/2), math.floor((bbox[1]+bbox[3])/2) )
+        frame + 1
+        distance = depth_frame.get_distance( math.floor((bbox[0]+bbox[2])/2), math.floor((bbox[1]+bbox[3])/2) )
         # Show images
         cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('RealSense', images)
         cv2.waitKey(1)
+
+        if(distance < 500):
+            motors += 200
+            if(motors >7500):
+                   motors = 7500
+            tango.setTarget(MOTORS,motors)
+        elif(distance > 500):
+            motors -= 200
+            if(motors < 1500):
+                motors = 1500
+            tango.setTarget(MOTORS,motors)
+            
+
 
 
 finally:
