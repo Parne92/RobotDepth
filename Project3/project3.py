@@ -119,36 +119,30 @@ try:
         cv2.circle(blank_image2, (640,240), (5), (0, 0, 255), 2, 1)
         images = np.vstack((images,blank_image2))
 
-        frame = 0
-        initDistance = 0
+
+        print (depth_frame.get_distance( math.floor((bbox[0]+bbox[2])/2), math.floor((bbox[1]+bbox[3])/2) )*100)
 
         xCoord = (bbox[0] + bbox[2]/2)
         xCoord = math.floor(xCoord)
         yCoord = (bbox[1]+ bbox[3]/2)
         yCoord = math.floor(yCoord)
-        if frame == 1:
-            initDistance= depth_frame.get_distance(xCoord,yCoord )
-        frame + 1
         distance = depth_frame.get_distance(xCoord,yCoord)
-        print(distance)
-        print(initDistance)
         # Show images
         cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('RealSense', images)
         cv2.waitKey(1)
 
-        if(initDistance > 1):
+        if(distance < 1):
             motors += 200
             if(motors >7900):
                    motors = 7900
             tango.setTarget(MOTORS,motors)
-            print("moving forwards")
-        elif(initDistance < 1):
+        elif(distance > 1):
             motors -= 200
             if(motors < 1510):
                 motors = 1510
             tango.setTarget(MOTORS,motors)
-            print("moving backwards")
+
             
 
 
