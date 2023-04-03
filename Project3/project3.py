@@ -123,10 +123,15 @@ try:
         print (depth_frame.get_distance( math.floor((bbox[0]+bbox[2])/2), math.floor((bbox[1]+bbox[3])/2) )*100)
         frame = 0
         initDistance = 0
+
+        xCoord = (bbox[0] + bbox[2]/2)
+        xCoord = math.floor(xCoord)
+        yCoord = (bbox[1]+ bbox[4]/2)
+        yCoord = math.floor(yCoord)
         if frame == 1:
-            initDistance= depth_frame.get_distance( math.floor((bbox[0]+bbox[2])/2), math.floor((bbox[1]+bbox[3])/2) )
+            initDistance= depth_frame.get_distance(xCoord,yCoord )
         frame + 1
-        distance = depth_frame.get_distance( math.floor((bbox[0]+bbox[2])/2), math.floor((bbox[1]+bbox[3])/2) )
+        distance = depth_frame.get_distance(xCoord,yCoord)
         # Show images
         cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('RealSense', images)
