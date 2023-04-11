@@ -92,7 +92,7 @@ try:
 
         #--Threshold Image--
 
-        (t, threshold) = cv2.threshold(edge, 40,255,cv2.THRESH_BINARY)
+        (t, threshold) = cv2.threshold(edge, 0,255,cv2.THRESH_BINARY)
 
         #--COG--
 
@@ -109,7 +109,7 @@ try:
 
         # Show images
         cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-        cv2.imshow('RealSense', edge)
+        cv2.imshow('RealSense', threshold)
         cv2.waitKey(1)
         #
         #if(distance < 1):
