@@ -87,12 +87,12 @@ try:
 
         gray = cv2.cvtColor(normalize,cv2.COLOR_BGR2GRAY)
 
-        edge = cv2.Canny(gray,100,200)
+        edge = cv2.Canny(gray,40,200)
 
 
         #--Threshold Image--
 
-        (t, threshold) = cv2.threshold(edge, 1,255,cv2.THRESH_BINARY)
+        (t, threshold) = cv2.threshold(edge, 40,255,cv2.THRESH_BINARY)
 
         #--COG--
 
