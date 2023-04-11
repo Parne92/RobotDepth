@@ -83,7 +83,7 @@ try:
 
         #--Normalize, edge detection --
 
-        normalize = cv2.normalize(color_image,normalize, 0,255, cv2.NORM_MINMAX)
+        normalize = cv2.normalize(color_image,0,255, cv2.NORM_MINMAX)
 
         gray = cv2.cvtColor(normalize,cv2.COLOR_BGR2GRAY)
 
