@@ -98,8 +98,12 @@ try:
 
         Moments = cv2.moments(threshold)
 
-        cX = int(Moments["m10"] / Moments["m00"])
-        cY = int(Moments["m01"] / Moments["m00"])
+        
+        if Moments["m00"] != 0:
+            cX = int(Moments["m10"] / Moments["m00"])
+            cY = int(Moments["m01"] / Moments["m00"])
+        else:
+            cX, cY = 0,0
 
         cv2.circle(threshold, (cX, cY), 5, (255, 255, 255), -1)
 
