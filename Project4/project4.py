@@ -92,7 +92,7 @@ try:
 
         #--Threshold Image--
 
-        (t, threshold) = cv2.threshold(edge, 100,255,cv2.THRESH_BINARY)
+        (t, threshold) = cv2.threshold(edge, 40,255,cv2.THRESH_BINARY)
 
         #--COG--
 
