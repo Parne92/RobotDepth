@@ -87,12 +87,10 @@ try:
 
         gray = cv2.cvtColor(normalize,cv2.COLOR_BGR2GRAY)
 
-        edge = cv2.Canny(gray,100,200)
-
 
         #--Threshold Image--
 
-        (t, threshold) = cv2.threshold(edge, 40,255,cv2.THRESH_BINARY)
+        (t, threshold) = cv2.threshold(gray, 40,255,cv2.THRESH_BINARY)
 
         #--COG--
 
@@ -109,7 +107,7 @@ try:
 
         # Show images
         cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-        cv2.imshow('RealSense', edge)
+        cv2.imshow('RealSense', threshold)
         cv2.waitKey(1)
         #
         #if(distance < 1):
