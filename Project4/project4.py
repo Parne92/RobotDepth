@@ -87,7 +87,7 @@ try:
 
         gray = cv2.cvtColor(normalize,cv2.COLOR_BGR2GRAY)
 
-        edge = cv2.Canny(gray,40,200)
+        edge = cv2.Canny(gray,150,200)
 
 
         #--Threshold Image--
