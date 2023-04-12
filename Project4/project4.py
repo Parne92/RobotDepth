@@ -119,10 +119,10 @@ try:
             body -= 200
             if(body < 5000):
                 body = 5000
-            tango.setTarget(BODY, body)
+            tango.setTarget(MOTORS, body)
         else:
             body = 6000
-            tango.setTarget(BODY, body)
+            tango.setTarget(MOTORS, body)
 
         print(cY)
 finally:
