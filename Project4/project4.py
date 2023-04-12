@@ -114,7 +114,7 @@ try:
         cv2.imshow('RealSense', threshold)
         cv2.waitKey(1)
         #
-        if(cY > 200):
+        if(cX > 200):
             body += 200
             if(body > 7000):
                 body = 7000
