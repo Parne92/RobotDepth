@@ -115,7 +115,7 @@ try:
         cv2.waitKey(1)
         #
 
-        if (cY < 270):
+        if (cY < 260):
             body -= 200
             if(body < 5000):
                 body = 5000
@@ -129,7 +129,7 @@ try:
             if(motors < 5000):
                 motors = 5000
             tango.setTarget(MOTORS, motors)
-        elif (cX < 260):
+        elif (cX < 270):
             motors += 200
             if(motors > 7000):
                 motors = 7000
