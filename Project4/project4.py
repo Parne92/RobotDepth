@@ -87,7 +87,9 @@ try:
 
         gray = cv2.cvtColor(normalize,cv2.COLOR_BGR2GRAY)
 
-        edge = cv2.Canny(gray,300,320)
+        blur = cv2.GaussianBlur(gray,(5,5), 0)
+
+        edge = cv2.Canny(blur,300,320)
 
 
         #--Threshold Image--
