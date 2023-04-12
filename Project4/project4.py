@@ -127,13 +127,13 @@ try:
 
         if(cX > 420):
             motors += 250
-            tango.setTarget(MOTORS,motors)
+            tango.setTarget(TURN,motors)
         elif(cX < 220):
             motors -= 250
-            tango.setTarget(MOTORS,motors)
+            tango.setTarget(TURN,motors)
         else:
             motors = 6000
-            tango.setTarget(MOTORS,motors)
+            tango.setTarget(TURN,motors)
 
 
 
