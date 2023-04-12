@@ -121,21 +121,8 @@ try:
                 body = 5200
             tango.setTarget(BODY,body)
         else:
-            print(cX)
             body = 6000
             tango.setTarget(BODY,body)
-
-        if(cX > 420):
-            motors += 250
-            if(motors < 5200):
-                motors = 5200
-            tango.setTarget(MOTORS,motors)
-
-        if (cX < 220):
-            motors -= 250
-            if(motors < 5200):
-                motors = 5200
-            tango.setTarget(MOTORS,motors)
 
 
 
