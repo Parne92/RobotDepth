@@ -115,15 +115,17 @@ try:
         cv2.waitKey(1)
         #
         if(cY < 220):
-            body -= 200
-            if(body < 5200):
-                body = 5200
+            body -= 100
+            if(body < 5500):
+                body = 5500
             tango.setTarget(BODY,body)
         else:
             body = 6000
             tango.setTarget(BODY,body)
 
-        print(cY)
+        
+
+        print(cX)
 
             
 
