@@ -115,16 +115,6 @@ try:
         cv2.waitKey(1)
         #
 
-        if (cX < 300):
-            motors -= 250
-            tango.setTarget(MOTORS,motors)
-        elif (cX > 500):
-            motors += 250
-            tango.setTarget(MOTORS,motors)
-        else:
-            motors = 6000
-            tango.setTarget(MOTORS,motors)
-
         if(cY < 270):
             body -= 250
             if(body < 5500):
