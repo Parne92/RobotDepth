@@ -119,12 +119,21 @@ try:
             body -= 200
             if(body < 5000):
                 body = 5000
-            tango.setTarget(MOTORS, body)
+            tango.setTarget(BODY, body)
         else:
             body = 6000
-            tango.setTarget(MOTORS, body)
+            tango.setTarget(BODY, body)
 
-        print(cY)
+        if (cY > 370):
+            motors -= 200
+            if(motors < 5000):
+                motors = 5000
+            tango.setTarget(MOTORS, motors)
+        else:
+            motors = 6000
+            tango.setTarget(MOTORS, motors)
+
+        print(cX)
 finally:
 
     # Stop streaming
