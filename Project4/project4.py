@@ -124,7 +124,7 @@ try:
             body = 6000
             tango.setTarget(BODY, body)
 
-        if (cY > 370):
+        if (cX > 370):
             motors -= 200
             if(motors < 5000):
                 motors = 5000
