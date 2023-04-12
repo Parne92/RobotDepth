@@ -126,7 +126,7 @@ try:
             tango.setTarget(MOTORS,motors)
 
         if(cY < 270):
-            body -= 100
+            body -= 250
             if(body < 5500):
                 body = 5500
             tango.setTarget(BODY,body)
