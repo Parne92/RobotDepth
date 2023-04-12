@@ -127,6 +127,7 @@ try:
                 tango.setTarget(MOTORS,motors)
         else:
             motors: 6000
+            tango.setTarget(MOTORS,motors)
 
         if(cY < 270):
             body -= 250
