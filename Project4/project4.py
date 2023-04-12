@@ -114,16 +114,14 @@ try:
         cv2.imshow('RealSense', threshold)
         cv2.waitKey(1)
         #
-        #if(distance < 1):
-           # body += 200
-           # if(body >7900):
-             #      body = 7900
-            #tango.setTarget(BODY,body)
-       # elif(distance > 1):
-           # body -= 200
-            #if(body < 1510):
-                #body = 1510
-            #tango.setTarget(BODY,body)
+        if(cy > 158):
+            body += 200
+            if(body > 6500):
+                body = 6500
+            tango.setTarget(BODY,body)
+        else:
+            body = 6000
+            tango.setTarget(BODY,body)
 
             
 
