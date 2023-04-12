@@ -128,15 +128,16 @@ try:
         else:
             motors: 6000
             tango.setTarget(MOTORS,motors)
-
-        if(cY < 270):
-            body -= 250
+            if(cY < 270):
+                body -= 250
             if(body < 5200):
                 body = 5200
-            tango.setTarget(BODY,body)
-        else:
-            body = 6000
-            tango.setTarget(BODY,body)
+                tango.setTarget(BODY,body)
+            else:
+                body = 6000
+                tango.setTarget(BODY,body)
+
+        
 
 
 
