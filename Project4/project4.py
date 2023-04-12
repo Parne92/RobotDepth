@@ -124,7 +124,15 @@ try:
             tango.setTarget(BODY,body)
 
         
-
+        if (cX < 350):
+            motors -= 250
+            tango.setTarget(MOTORS,motors)
+        elif (cX > 370):
+            motors += 250
+            tango.setTarget(MOTORS,motors)
+        else:
+            motors = 6000
+            tango.setTarget(MOTORS,motors)
         print(cX)
 
             
