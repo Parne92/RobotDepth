@@ -116,18 +116,18 @@ try:
         #
 
         if(cX < 270):
-            time.sleep(500)
+            time.sleep(0.5)
             motors -= 250
             if(motors < 5200):
                 motors = 5200
         elif(cX > 370):
-            time.sleep(500)
+            time.sleep(0.5)
             motors += 250
             if(motors > 6800):
                 motors = 6800
 
         if(cY < 270):
-            time.sleep(500)
+            time.sleep(0.5)
             body -= 250
             if(body < 5200):
                 body = 5200
