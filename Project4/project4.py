@@ -89,7 +89,7 @@ try:
 
         blur = cv2.GaussianBlur(gray,(5,5), 0)
 
-        edge = cv2.Canny(blur,300,320)
+        edge = cv2.Canny(blur,100,200)
 
 
         #--Threshold Image--
