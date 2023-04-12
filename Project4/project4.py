@@ -114,21 +114,23 @@ try:
         cv2.imshow('RealSense', threshold)
         cv2.waitKey(1)
         #
+
+        if (cX < 300):
+            motors -= 250
+            tango.setTarget(MOTORS,motors)
+        elif (cX > 400):
+            motors += 250
+            tango.setTarget(MOTORS,motors)
+        else:
+            motors = 6000
+            tango.setTarget(MOTORS,motors)
+
         if(cY < 220):
             body -= 100
             if(body < 5500):
                 body = 5500
             tango.setTarget(BODY,body)
         else:
-            if (cX < 350):
-                motors -= 250
-                tango.setTarget(MOTORS,motors)
-            elif (cX > 370):
-                motors += 250
-                tango.setTarget(MOTORS,motors)
-            else:
-                motors = 6000
-                tango.setTarget(MOTORS,motors)
             print(cX)
             body = 6000
             tango.setTarget(BODY,body)
