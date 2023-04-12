@@ -114,10 +114,10 @@ try:
         cv2.imshow('RealSense', threshold)
         cv2.waitKey(1)
         #
-        if(cY < 158):
+        if(cY > 200):
             body += 200
             if(body > 7000):
-                body = 6500
+                body = 7000
             tango.setTarget(BODY,body)
         else:
             body = 6000
