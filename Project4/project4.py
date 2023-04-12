@@ -115,9 +115,9 @@ try:
         cv2.waitKey(1)
         #
         if(cX > 200):
-            body += 200
-            if(body > 7000):
-                body = 7000
+            body -= 200
+            if(body < 5000):
+                body = 5000
             tango.setTarget(BODY,body)
         else:
             body = 6000
