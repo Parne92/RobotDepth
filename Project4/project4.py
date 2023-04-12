@@ -116,7 +116,7 @@ try:
         #
         if(cY < 158):
             body += 200
-            if(body > 6500):
+            if(body > 7000):
                 body = 6500
             tango.setTarget(BODY,body)
         else:
