@@ -122,11 +122,7 @@ while(1):
             x, y, w, h = cv2.boundingRect(contour)
             color_image = cv2.rectangle(color_image, (x, y), 
                                        (x + w, y + h), 
-                                       (0, 0, 255), 2)
-              
-            cv2.putText(color_image, "Red Colour", (x, y),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1.0,
-                        (0, 0, 255))    
+                                       (0, 0, 255), 2) 
   
     # Creating contour to track green color
     contours, hierarchy = cv2.findContours(green_mask,
@@ -140,10 +136,6 @@ while(1):
             color_image = cv2.rectangle(color_image, (x, y), 
                                        (x + w, y + h),
                                        (0, 255, 0), 2)
-              
-            cv2.putText(color_image, "Green Colour", (x, y),
-                        cv2.FONT_HERSHEY_SIMPLEX, 
-                        1.0, (0, 255, 0))
   
     # Creating contour to track blue color
     contours, hierarchy = cv2.findContours(blue_mask,
@@ -157,13 +149,8 @@ while(1):
                                        (x + w, y + h),
                                        (255, 0, 0), 2)
               
-            cv2.putText(color_image, "Blue Colour", (x, y),
-                        cv2.FONT_HERSHEY_SIMPLEX,
-                        1.0, (255, 0, 0))
-              
     # Program Termination
     cv2.imshow("Multiple Color Detection in Real-TIme", color_image)
     if cv2.waitKey(10) & 0xFF == ord('q'):
-        color_image.release()
         cv2.destroyAllWindows()
         break
