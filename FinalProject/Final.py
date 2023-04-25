@@ -78,20 +78,20 @@ try:
 
         # Set range for red color and 
         # define mask
-        yellow_lower = np.array([50, 0, 50], np.uint8)
-        yellow_upper = np.array([70, 255, 255], np.uint8)
+        yellow_lower = np.array([61, 0, 50], np.uint8)
+        yellow_upper = np.array([120, 255, 255], np.uint8)
         yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
   
         # Set range for green color and 
         # define mask
-        green_lower = np.array([110, 52, 72], np.uint8)
-        green_upper = np.array([130, 255, 255], np.uint8)
+        green_lower = np.array([121, 52, 72], np.uint8)
+        green_upper = np.array([180, 255, 255], np.uint8)
         green_mask = cv2.inRange(hsv, green_lower, green_upper)
   
         # Set range for blue color and
         # define mask
-        pink_lower = np.array([290, 0, 50], np.uint8)
-        pink_upper = np.array([320, 255, 255], np.uint8)
+        pink_lower = np.array([301, 0, 50], np.uint8)
+        pink_upper = np.array([360, 255, 255], np.uint8)
         pink_mask = cv2.inRange(hsv, pink_lower, pink_upper)
 
         # Morphological Transform, Dilation
