@@ -78,7 +78,7 @@ try:
 
         # Set range for red color and 
         # define mask
-        yellow_lower = np.array([50, 0, 0], np.uint8)
+        yellow_lower = np.array([50, 0, 50], np.uint8)
         yellow_upper = np.array([70, 255, 255], np.uint8)
         yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
   
@@ -90,7 +90,7 @@ try:
   
         # Set range for blue color and
         # define mask
-        pink_lower = np.array([290, 0, 0], np.uint8)
+        pink_lower = np.array([290, 0, 50], np.uint8)
         pink_upper = np.array([320, 255, 255], np.uint8)
         pink_mask = cv2.inRange(hsv, pink_lower, pink_upper)
 
