@@ -69,7 +69,7 @@ try:
         color_frame = frames.get_color_frame()
 
         # Convert images to numpy arrays
-        _,color_image = np.asanyarray(color_frame.get_data())
+        color_image = np.asanyarray(color_frame.get_data())
 
         color_colormap_dim = color_image.shape
 
