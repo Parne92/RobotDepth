@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 import time
 import math
+from pupil_apriltags import Detector
 from maestro import Controller                                                     
 
 MOTORS = 1
@@ -15,6 +16,18 @@ tango = Controller()
 motors = 6000
 turns = 6000
 body = 6000
+
+#tag detector
+at_detector = Detector(
+    families = "tag36h11",
+    nthreads = 1,
+    quad_decimate=1.0,
+    quad_sigma = 0.0,
+    refine_edges = 1,
+    decode_sharpening = 0.25,
+    debug=0
+)
+
 
 # Configure depth and color streams
 pipeline = rs.pipeline()
@@ -56,10 +69,31 @@ frames = pipeline.wait_for_frames()
 # Align the depth frame to color frame
 aligned_frames = align.process(frames)
 color_frame = frames.get_color_frame()
+depth_frame = frames.get_depth_frame()
 
 
 # Convert images to numpy arrays
 color_image = np.asanyarray(color_frame.get_data())
+
+color_to_save = ""
+
+def orientation(id):
+    gray = cv2.cvtColor(color_image, cv2.COLOR_BGR2GRAY)
+    detected = at_detector.detect(gray)
+    if detected:
+        tag = detected[0]
+        if tag.tag_id == id:
+            oriented = True
+            #Stop Rotation
+        (cX,cY) = int (int(tag.center[0]),int(tag.center[1]))
+        depth = depth_frame.get_distance(cX,cY)
+        distance = int(0.01 / depth)
+        distanceText = "distance from tag" + str(tag.tag_id) + ": " + str(round(depth,2))
+        cv2.putText(color_image,distanceText,(20,200), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1)
+        x1,y1 = int(tag.corners[0][0]), int(tag.corners[0][1])
+        x2,y2 = int(tag.corners[2][0]), int(tag.corners[2][1])
+        cv2.rectangle(color_image, (x1,y1), (x2,y2), (0,255,0), 2)
+
 
 try:
     while True:
@@ -81,6 +115,12 @@ try:
         yellow_lower = np.array([33, 80, 56], np.uint8)
         yellow_upper = np.array([55, 125, 197], np.uint8)
         yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
+
+        # Set range for blue color and 
+        # define mask
+        blue_lower = np.array([94, 80, 2], np.uint8)
+        blue_upper = np.array([120, 255, 255], np.uint8)
+        blue_mask = cv2.inRange(hsv, blue_lower, blue_upper)
   
         # Set range for green color and 
         # define mask
@@ -123,6 +163,7 @@ try:
         for pic, contour in enumerate(contours):
             area = cv2.contourArea(contour)
             if(area > 300):
+                color_to_save = "yellow"
                 x, y, w, h = cv2.boundingRect(contour)
                 color_image = cv2.rectangle(color_image, (x, y), 
                                        (x + w, y + h), 
@@ -137,6 +178,7 @@ try:
         for pic, contour in enumerate(contours):
             area = cv2.contourArea(contour)
             if(area > 300):
+                color_to_save = "green"
                 x, y, w, h = cv2.boundingRect(contour)
                 color_image = cv2.rectangle(color_image, (x, y), 
                                        (x + w, y + h),
@@ -149,6 +191,7 @@ try:
         for pic, contour in enumerate(contours):
             area = cv2.contourArea(contour)
             if(area > 300):
+                color_to_save = "pink"
                 x, y, w, h = cv2.boundingRect(contour)
                 color_image = cv2.rectangle(color_image, (x, y),
                                        (x + w, y + h),
