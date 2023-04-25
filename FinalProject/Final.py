@@ -98,17 +98,17 @@ while(1):
       
     # For red color
     red_mask = cv2.dilate(red_mask, kernel)
-    res_red = cv2.bitwise_and(imageFrame, imageFrame, 
+    res_red = cv2.bitwise_and(color_image, color_image, 
                               mask = red_mask)
       
     # For green color
     green_mask = cv2.dilate(green_mask, kernel)
-    res_green = cv2.bitwise_and(imageFrame, imageFrame,
+    res_green = cv2.bitwise_and(color_image, color_image,
                                 mask = green_mask)
       
     # For blue color
     blue_mask = cv2.dilate(blue_mask, kernel)
-    res_blue = cv2.bitwise_and(imageFrame, imageFrame,
+    res_blue = cv2.bitwise_and(color_image, color_image,
                                mask = blue_mask)
    
     # Creating contour to track red color
@@ -120,11 +120,11 @@ while(1):
         area = cv2.contourArea(contour)
         if(area > 300):
             x, y, w, h = cv2.boundingRect(contour)
-            imageFrame = cv2.rectangle(imageFrame, (x, y), 
+            color_image = cv2.rectangle(color_image, (x, y), 
                                        (x + w, y + h), 
                                        (0, 0, 255), 2)
               
-            cv2.putText(imageFrame, "Red Colour", (x, y),
+            cv2.putText(color_image, "Red Colour", (x, y),
                         cv2.FONT_HERSHEY_SIMPLEX, 1.0,
                         (0, 0, 255))    
   
@@ -137,11 +137,11 @@ while(1):
         area = cv2.contourArea(contour)
         if(area > 300):
             x, y, w, h = cv2.boundingRect(contour)
-            imageFrame = cv2.rectangle(imageFrame, (x, y), 
+            color_image = cv2.rectangle(color_image, (x, y), 
                                        (x + w, y + h),
                                        (0, 255, 0), 2)
               
-            cv2.putText(imageFrame, "Green Colour", (x, y),
+            cv2.putText(color_image, "Green Colour", (x, y),
                         cv2.FONT_HERSHEY_SIMPLEX, 
                         1.0, (0, 255, 0))
   
@@ -153,17 +153,17 @@ while(1):
         area = cv2.contourArea(contour)
         if(area > 300):
             x, y, w, h = cv2.boundingRect(contour)
-            imageFrame = cv2.rectangle(imageFrame, (x, y),
+            color_image = cv2.rectangle(color_image, (x, y),
                                        (x + w, y + h),
                                        (255, 0, 0), 2)
               
-            cv2.putText(imageFrame, "Blue Colour", (x, y),
+            cv2.putText(color_image, "Blue Colour", (x, y),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.0, (255, 0, 0))
               
     # Program Termination
-    cv2.imshow("Multiple Color Detection in Real-TIme", imageFrame)
+    cv2.imshow("Multiple Color Detection in Real-TIme", color_image)
     if cv2.waitKey(10) & 0xFF == ord('q'):
-        imageFrame.release()
+        color_image.release()
         cv2.destroyAllWindows()
         break
