@@ -78,9 +78,9 @@ try:
 
         # Set range for red color and 
         # define mask
-        red_lower = np.array([136, 87, 111], np.uint8)
-        red_upper = np.array([180, 255, 255], np.uint8)
-        red_mask = cv2.inRange(hsv, red_lower, red_upper)
+        yellow_lower = np.array([60, 255, 60], np.uint8)
+        yellow_upper = np.array([60, 255, 255], np.uint8)
+        yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
   
         # Set range for green color and 
         # define mask
@@ -90,9 +90,9 @@ try:
   
         # Set range for blue color and
         # define mask
-        blue_lower = np.array([94, 80, 2], np.uint8)
-        blue_upper = np.array([120, 255, 255], np.uint8)
-        blue_mask = cv2.inRange(hsv, blue_lower, blue_upper)
+        pink_lower = np.array([310, 100, 90], np.uint8)
+        pink_upper = np.array([310, 255, 255], np.uint8)
+        pink_mask = cv2.inRange(hsv, pink_lower, pink_upper)
 
         # Morphological Transform, Dilation
         # for each color and bitwise_and operator
@@ -101,9 +101,9 @@ try:
         kernel = np.ones((5, 5), "uint8")
       
         # For red color
-        red_mask = cv2.dilate(red_mask, kernel)
-        res_red = cv2.bitwise_and(color_image, color_image, 
-                              mask = red_mask)
+        yellow_mask = cv2.dilate(yellow_mask, kernel)
+        res_yellow = cv2.bitwise_and(color_image, color_image, 
+                              mask = yellow_mask)
       
         # For green color
         green_mask = cv2.dilate(green_mask, kernel)
@@ -111,12 +111,12 @@ try:
                                 mask = green_mask)
       
         # For blue color
-        blue_mask = cv2.dilate(blue_mask, kernel)
-        res_blue = cv2.bitwise_and(color_image, color_image,
-                               mask = blue_mask)
+        pink_mask = cv2.dilate(pink_mask, kernel)
+        res_pink = cv2.bitwise_and(color_image, color_image,
+                               mask = pink_mask)
    
         # Creating contour to track red color
-        contours, hierarchy = cv2.findContours(red_mask,
+        contours, hierarchy = cv2.findContours(yellow_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
         
@@ -126,7 +126,7 @@ try:
                 x, y, w, h = cv2.boundingRect(contour)
                 color_image = cv2.rectangle(color_image, (x, y), 
                                        (x + w, y + h), 
-                                       (0, 0, 255), 2)
+                                       (51, 255, 255), 2)
                 
 
         # Creating contour to track green color
@@ -143,7 +143,7 @@ try:
                                        (0, 255, 0), 2)
                 
 
-        contours, hierarchy = cv2.findContours(blue_mask,
+        contours, hierarchy = cv2.findContours(pink_mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
         for pic, contour in enumerate(contours):
@@ -152,7 +152,7 @@ try:
                 x, y, w, h = cv2.boundingRect(contour)
                 color_image = cv2.rectangle(color_image, (x, y),
                                        (x + w, y + h),
-                                       (255, 0, 0), 2)
+                                       (255, 77, 255), 2)
               
 
         # Display Image and Mask
