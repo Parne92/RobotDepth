@@ -185,7 +185,8 @@ def findColor():
             color_to_save = "pink"
             x, y, w, h = cv2.boundingRect(contour)
             color_image = cv2.rectangle(color_image, (x, y),(x + w, y + h),(255, 77, 255), 2)
-                
+    
+    speak("Color of Ice: " + color_to_save)
     return color_to_save
 
 def findGoal(color_to_save):
