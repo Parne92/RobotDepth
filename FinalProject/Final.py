@@ -188,6 +188,70 @@ def findColor():
                 
     return color_to_save
 
+def findGoal(color_to_save):
+    hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
+    kernel = np.ones((5, 5), "uint8")
+    if color_to_save == "yellow":
+        yellow_lower = np.array([33, 80, 56], np.uint8)
+        yellow_upper = np.array([55, 125, 197], np.uint8)
+        yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
+
+        yellow_mask = cv2.dilate(yellow_mask, kernel)
+        res_yellow = cv2.bitwise_and(color_image, color_image, mask = yellow_mask)
+
+        contours = cv2.findContours(yellow_mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+        
+        for pic, contour in enumerate(contours):
+            area = cv2.contourArea(contour)
+            if(area > 300):
+                x, y, w, h = cv2.boundingRect(contour)
+                color_image = cv2.rectangle(color_image, (x, y), (x + w, y + h), (51, 255, 255), 2)
+
+        ##Go to Point
+    elif color_to_save == "green":
+        green_lower = np.array([61, 120, 101], np.uint8)
+        green_upper = np.array([66, 155,212], np.uint8)
+        green_mask = cv2.inRange(hsv, green_lower, green_upper)
+
+        green_mask = cv2.dilate(green_mask, kernel)
+        res_green = cv2.bitwise_and(color_image, color_image,mask = green_mask)
+
+        contours = cv2.findContours(green_mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+      
+        for pic, contour in enumerate(contours):
+            area = cv2.contourArea(contour)
+            if(area > 300):
+                x, y, w, h = cv2.boundingRect(contour)
+                color_image = cv2.rectangle(color_image, (x, y), (x + w, y + h),(0, 255, 0), 2)
+        
+        ##Go to point
+
+    elif color_to_save == "pink":
+        pink_lower = np.array([120, 111, 126], np.uint8)
+        pink_upper = np.array([179, 255, 255], np.uint8)
+        pink_mask = cv2.inRange(hsv, pink_lower, pink_upper)
+
+        pink_mask = cv2.dilate(pink_mask, kernel)
+        res_pink = cv2.bitwise_and(color_image, color_image,mask = pink_mask)
+
+        contours = cv2.findContours(pink_mask, cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+
+        for pic, contour in enumerate(contours):
+            area = cv2.contourArea(contour)
+            if(area > 300):
+                x, y, w, h = cv2.boundingRect(contour)
+                color_image = cv2.rectangle(color_image, (x, y),(x + w, y + h),(255, 77, 255), 2)
+
+        ##Go to point
+
+
+def stopMovement():
+    body = 6000
+    tango.setTarget(BODY, body)
+    motors = 6000
+    tango.setTarget(MOTORS, motors)
+
+
 
 try:
     while True:
@@ -205,7 +269,8 @@ try:
         findFace()
         findColor()
         orientation(0,"Entering Goal Area")
-        #findGoal(color_to_save)
+        findGoal(color_to_save)
+        stopMovement()
 
         if cv2.waitKey(10) & 0xFF == ord('q'):
             break
