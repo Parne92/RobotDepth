@@ -109,9 +109,8 @@ def findFace():
     speak("Ice Please :)")
 
 def speak(say):
-    print(say)
-    print(say)
-    print(say)
+    for X in range(20):
+        print(say)
 
 
 def findColor():
