@@ -99,13 +99,30 @@ try:
 
         distance = depth_frame.get_distance(cX,cY)
 
-        print(distance)
-
-
-
         cv2.namedWindow('ColorImage', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('ColorImage', color_image)
         cv2.waitKey(1)
+
+        if (cX > 370):
+            motors -= 200
+            if(motors < 5000):
+                motors = 5000
+            tango.setTarget(MOTORS, motors)
+        elif (cX < 270):
+            motors += 200
+            if(motors > 7000):
+                motors = 7000
+            tango.setTarget(MOTORS, motors)
+        else:
+            motors = 6000
+            tango.setTarget(MOTORS, motors)
+
+        if(distance > 1.5):
+            body += 200
+            if(body >7900):
+                   body = 7900
+            tango.setTarget(BODY,body)
+        print("Entered Mining Area")
 finally:
     # Stop streaming
     pipeline.stop()
