@@ -1,6 +1,7 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
+import time
 from maestro import Controller 
 
 MOTORS = 1
@@ -82,19 +83,13 @@ def orientation():
                         if depthToMine > 1:
                             motors = 6000
                             tango.setTarget(MOTORS,motors)
-                            pass
+                            body = 5200
+                            tango.setTarget(BODY,body)
     except TypeError:
             body = 6000
             tango.setTarget(BODY,body)
-            motors = 6000
+            motors = 5100
             tango.setTarget(MOTORS,motors)
-
-def walkForward():
-    motors = 6000
-    tango.setTarget(MOTORS,motors)
-    for x in range(10):
-        motors = 5100
-    motors = 6000
 
 try:
     while True:
@@ -126,9 +121,38 @@ try:
         cv2.imshow('RobotVision', color_image)
         cv2.waitKey(1)
 
-        orientation()
-        walkForward()
+        try:
+            for i in range(len(ids)):
+                if(ids[i]) == 22:
+                    print("found mine")
+                    box = corners[i][0]
+                    cX = int((box[0][0] + box[1][0]) / 2)
+                    cY = int((box[1][1] + box[3][1]) / 2)
+                    depthToMine = depth_frame.get_distance(cX,cY)
 
+                    if cX >= 400:
+                        motors = 5100
+                        tango.setTarget(MOTORS,motors)
+                    elif cX < 200:
+                        motors = 6900
+                        tango.setTarget(MOTORS,motors)
+                    elif cX < 400 and cX > 200:
+                        if depthToMine > 1:
+                            motors = 6000
+                            tango.setTarget(MOTORS,motors)
+                            pass
+        except TypeError:
+            body = 6000
+            tango.setTsarget(BODY,body)
+            motors = 6000
+            tango.setTarget(MOTORS,motors)
+        
+        tango.setTarget(MOTORS,motors)
+        motors = 5200
+        time.sleep(3)
+        tango.setTarget(MOTORS,motors)
+        motors = 6000
+        
 
 
 
