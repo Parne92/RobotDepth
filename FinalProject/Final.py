@@ -72,7 +72,7 @@ try:
 
         hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
 
-        orange_lower = np.array([0, 100, 20], np.uint8)
+        orange_lower = np.array([0, 200, 20], np.uint8)
         orange_upper = np.array([60, 255, 255], np.uint8)
         orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
 
