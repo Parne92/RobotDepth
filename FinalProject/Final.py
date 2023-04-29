@@ -65,7 +65,7 @@ try:
 
         # Convert images to numpy arrays
         color_image = np.asanyarray(color_frame.get_data())
-        
+
         color_colormap_dim = color_image.shape
 
         hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
@@ -74,6 +74,16 @@ try:
         orange_lower = np.array([0, 200, 20], np.uint8)
         orange_upper = np.array([60, 255, 255], np.uint8)
         orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
+
+        Moments = cv2.moments(orange_mask)
+
+        if Moments["m00"] != 0:
+            cX = int(Moments["m10"] / Moments["m00"])
+            cY = int(Moments["m01"] / Moments["m00"])
+        else:
+            cX, cY = 0,0
+
+        cv2.circle(orange_mask, (cX, cY), 5, (255, 255, 255), -1)
 
         cv2.namedWindow('OrangeMask', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('OrangeMask', orange_mask)
