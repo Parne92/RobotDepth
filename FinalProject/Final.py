@@ -58,7 +58,7 @@ depth_frame = frames.get_depth_frame()
 color_image = np.asanyarray(color_frame.get_data())
 
 markersize = 200
-markerImage22 = np.zeroes((markersize,markersize), dtype = np.uint8)
+markerImage22 = np.zeros((markersize,markersize), dtype = np.uint8)
 
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
 
