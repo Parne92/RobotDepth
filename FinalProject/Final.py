@@ -104,9 +104,14 @@ try:
                         motors = 6900
                         tango.setTarget(MOTORS,motors)
                     elif cX < 400 and cX > 200:
-                        motors = 6000
-                        tango.setTarget(MOTORS,motors)
-                        body = 4900
+                        if depthToMine > 1:
+                            motors = 6000
+                            tango.setTarget(MOTORS,motors)
+                            body = 4900
+                            tango.setTarget(BODY,body)
+                    if depthToMine < 1:
+                        print("Entered Mining Area!")
+                        body = 6000
                         tango.setTarget(BODY,body)
         except TypeError:
             body = 6000
