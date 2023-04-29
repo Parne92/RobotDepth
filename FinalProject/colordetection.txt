@@ -87,4 +87,9 @@
                 color_image = cv2.rectangle(color_image, (x, y),
                                        (x + w, y + h),
                                        (255, 77, 255), 2)
+
+
+                                       orange_lower = np.array([10, 100, 20], np.uint8)
+        orange_upper = np.array([25, 255, 255], np.uint8)
+        orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
               
