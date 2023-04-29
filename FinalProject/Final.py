@@ -1,8 +1,7 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
-import time
-from maestro import Controller 
+from maestro import Controller
 
 MOTORS = 1
 TURN = 2
@@ -48,7 +47,6 @@ profile = pipeline.start(config)
 align_to = rs.stream.color
 align = rs.align(align_to)
 
-
 frames = pipeline.wait_for_frames()
 # Align the depth frame to color frame
 aligned_frames = align.process(frames)
@@ -57,39 +55,6 @@ depth_frame = frames.get_depth_frame()
 
 # Convert images to numpy arrays
 color_image = np.asanyarray(color_frame.get_data())
-
-markersize = 200
-markerImage22 = np.zeros((markersize,markersize), dtype = np.uint8)
-
-aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
-
-def orientation():
-    try:
-            for i in range(len(ids)):
-                if(ids[i]) == 22:
-                    print("found mine")
-                    box = corners[i][0]
-                    cX = int((box[0][0] + box[1][0]) / 2)
-                    cY = int((box[1][1] + box[3][1]) / 2)
-                    depthToMine = depth_frame.get_distance(cX,cY)
-
-                    if cX >= 400:
-                        motors = 5100
-                        tango.setTarget(MOTORS,motors)
-                    elif cX < 200:
-                        motors = 6900
-                        tango.setTarget(MOTORS,motors)
-                    elif cX < 400 and cX > 200:
-                        if depthToMine > 1:
-                            motors = 6000
-                            tango.setTarget(MOTORS,motors)
-                            body = 5200
-                            tango.setTarget(BODY,body)
-    except TypeError:
-            body = 6000
-            tango.setTarget(BODY,body)
-            motors = 5100
-            tango.setTarget(MOTORS,motors)
 
 try:
     while True:
@@ -102,7 +67,6 @@ try:
         color_image = np.asanyarray(color_frame.get_data())
         depth_image = np.asanyarray(depth_frame.get_data())
 
-
         depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
 
         depth_colormap_dim = depth_colormap.shape
@@ -113,46 +77,49 @@ try:
             images = np.hstack((resized_color_image, depth_colormap))
         else:
             images = np.hstack((color_image, depth_colormap))
+        hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
+        orange_lower = np.array([0, 100, 20], np.uint8)
+        orange_lower = np.array([0, 200, 20], np.uint8)
+        orange_upper = np.array([60, 255, 255], np.uint8)
+        orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
+        Moments = cv2.moments(orange_mask)
+        if Moments["m00"] != 0:
+            cX = int(Moments["m10"] / Moments["m00"])
+            cY = int(Moments["m01"] / Moments["m00"])
+        else:
+            cX, cY = 0,0
+        cv2.circle(color_image, (cX, cY), 5, (0, 165, 255), -1)
 
-        corners, ids, rejects = cv2.aruco.detectMarkers(color_image, aruco_dict)
-        depthToMine = None
+        distance = depth_frame.get_distance(cX,cY)
 
-        cv2.namedWindow('RobotVison', cv2.WINDOW_AUTOSIZE)
-        cv2.imshow('RobotVision', color_image)
+        cv2.namedWindow('ColorImage', cv2.WINDOW_AUTOSIZE)
+        cv2.imshow('ColorImage', color_image)
         cv2.waitKey(1)
 
-        try:
-                for i in range(len(ids)):
-                    if(ids[i]) == 22:
-                        print("found mine")
-                        box = corners[i][0]
-                        cX = int((box[0][0] + box[1][0]) / 2)
-                        cY = int((box[1][1] + box[3][1]) / 2)
-                        depthToMine = depth_frame.get_distance(cX,cY)
+        if (cX > 370):
+            motors -= 200
+            if(motors < 5000):
+                motors = 5000
+                tango.setTarget(MOTORS, motors)
+        elif (cX < 270):
+            motors += 200
+            if(motors > 7000):
+                motors = 7000
+                tango.setTarget(MOTORS, motors)
+        else:
+            motors = 6000
+            tango.setTarget(MOTORS, motors)
 
-                        if cX >= 400:
-                            motors = 5100
-                            tango.setTarget(MOTORS,motors)
-                        elif cX < 200:
-                            motors = 6900
-                            tango.setTarget(MOTORS,motors)
-                        elif cX < 400 and cX > 200:
-                            while depthToMine > 1:
-                                motors = 6000
-                                tango.setTarget(MOTORS,motors)
-                                body = 5400
-                                tango.setTarget(BODY,body)
-        except TypeError:
-                body = 6000
+        if(distance > 1.5):
+            body += 200
+            body -= 200
+            if(body >7900):
+                body = 7900
                 tango.setTarget(BODY,body)
-                motors = 5100
-                tango.setTarget(MOTORS,motors)
-            
-    
-        
-
-
-
-finally:    
+                
+        print("distance: " + str(distance))
+        print("cX : " + str(cX))
+        print("Entered Mining Area")
+finally:
     # Stop streaming
     pipeline.stop()
