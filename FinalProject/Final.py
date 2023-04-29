@@ -90,25 +90,7 @@ try:
         else:
             cX, cY = 0,0
         cv2.circle(orange_mask, (cX, cY), 5, (0, 165, 255), -1)
-
-        aligned = False
-        while(aligned == False):
-            if (cX > 370):
-                motors -= 100
-                if(motors < 5000):
-                    motors = 5000
-                tango.setTarget(MOTORS, motors)
-            elif (cX < 270):
-                motors += 100
-                if(motors > 7000):
-                    motors = 7000
-                tango.setTarget(MOTORS, motors)
-            else:
-                motors = 6000
-                tango.setTarget(MOTORS, motors)
-                aligned = True
-        
-        
+            
 finally:
 
     # Stop streaming
