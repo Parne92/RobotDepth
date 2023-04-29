@@ -99,6 +99,8 @@ try:
 
         distance = depth_frame.get_distance(cX,cY)
 
+        print(distance)
+
 
 
         cv2.namedWindow('ColorImage', cv2.WINDOW_AUTOSIZE)
