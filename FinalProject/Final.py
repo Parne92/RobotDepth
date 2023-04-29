@@ -111,7 +111,7 @@ try:
                         if depthToMine > 1:
                             motors = 6000
                             tango.setTarget(MOTORS,motors)
-                            body = 5500
+                            body = 5200
                             tango.setTarget(BODY,body)
                     if depthToMine < 1:
                         print("Entered Mining Area!")
