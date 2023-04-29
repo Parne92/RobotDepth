@@ -120,8 +120,11 @@ try:
         if(distance > 1.5):
             body += 200
             if(body >7900):
-                   body = 7900
-            tango.setTarget(BODY,body)
+                body = 7900
+                tango.setTarget(BODY,body)
+
+        print("distance: " + distance)
+        print("cX : " + cX)
         print("Entered Mining Area")
 finally:
     # Stop streaming
