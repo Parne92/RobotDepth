@@ -111,6 +111,8 @@ try:
             tango.setTarget(MOTORS, motors)
 
         if(distance > 1.5):
+            motors = 6000
+            tango.setTarget(MOTORS,motors)
             body = 5200            
             tango.setTarget(BODY,body)
         else:
