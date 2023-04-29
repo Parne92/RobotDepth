@@ -111,11 +111,11 @@ try:
             tango.setTarget(MOTORS, motors)
 
         if(distance > 1.5):
-            body += 200
-            body -= 200
-            if(body >7900):
-                body = 7900
-                tango.setTarget(BODY,body)
+            body = 5200            
+            tango.setTarget(BODY,body)
+        else:
+            body = 6000
+            tango.setTarget(BODY,body)
 
         print("distance: " + str(distance))
         print("cX : " + str(cX))
