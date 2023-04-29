@@ -121,9 +121,7 @@ try:
         cv2.imshow('RobotVision', color_image)
         cv2.waitKey(1)
 
-        detected = False
-        if(detected == False):
-            try:
+        try:
                 for i in range(len(ids)):
                     if(ids[i]) == 22:
                         print("found mine")
@@ -144,14 +142,12 @@ try:
                                 tango.setTarget(MOTORS,motors)
                                 body = 5400
                                 tango.setTarget(BODY,body)
-                            detected = True
-            except TypeError:
+        except TypeError:
                 body = 6000
                 tango.setTarget(BODY,body)
                 motors = 5100
                 tango.setTarget(MOTORS,motors)
-        body = 6000
-        tango.setTarget(BODY,body)
+            
     
         
 
