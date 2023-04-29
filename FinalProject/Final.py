@@ -77,17 +77,8 @@ try:
         orange_upper = np.array([60, 255, 255], np.uint8)
         orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
 
-
-        Moments = cv2.moments(orange_mask)
-        if Moments["m00"] != 0:
-            cX = int(Moments["m10"] / Moments["m00"])
-            cY = int(Moments["m01"] / Moments["m00"])
-        else:
-            cX, cY = 0,0
-        cv2.circle(orange_mask, (cX, cY), 5, (0, 165, 255), -1)
         cv2.namedWindow('OrangeMask', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('OrangeMask', orange_mask)
-        print("IMAGE SHOULD SHOW")
             
 finally:
 
