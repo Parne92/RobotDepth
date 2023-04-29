@@ -87,7 +87,11 @@ try:
 
         corners, ids, rejects = cv2.aruco.detectMarkers(color_image, aruco_dict)
         depthToMine = None
-        
+
+        cv2.namedWindow('RobotVison', cv2.WINDOW_AUTOSIZE)
+        cv2.imshow('RobotVision', color_image)
+        cv2.waitKey(1)
+
         try:
             for i in range(len(ids)):
                 if(ids[i]) == 22:
@@ -97,13 +101,13 @@ try:
                     cY = int((box[1][1] + box[3][1]) / 2)
                     depthToMine = depth_frame.get_distance(cX,cY)
 
-                    if cX >= 400:
+                    if cX >= 500:
                         motors = 5100
                         tango.setTarget(MOTORS,motors)
-                    elif cX < 200:
+                    elif cX < 300:
                         motors = 6900
                         tango.setTarget(MOTORS,motors)
-                    elif cX < 400 and cX > 200:
+                    elif cX < 500 and cX > 300:
                         if depthToMine > 1:
                             motors = 6000
                             tango.setTarget(MOTORS,motors)
@@ -118,6 +122,8 @@ try:
             tango.setTarget(BODY,body)
             motors = 5100
             tango.setTarget(MOTORS,motors)
+
+        
 
 finally:    
     # Stop streaming
