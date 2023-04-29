@@ -90,6 +90,7 @@ def orientation():
             tango.setTarget(MOTORS,motors)
 
 def walkForward():
+    motors = 6000
     tango.setTarget(MOTORS,motors)
     for x in range(10):
         motors = 5100
