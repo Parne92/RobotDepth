@@ -52,7 +52,6 @@ frames = pipeline.wait_for_frames()
 # Align the depth frame to color frame
 aligned_frames = align.process(frames)
 color_frame = frames.get_color_frame()
-depth_frame = frames.get_depth_frame()
 
 # Convert images to numpy arrays
 color_image = np.asanyarray(color_frame.get_data())
@@ -79,7 +78,7 @@ try:
 
         cv2.namedWindow('OrangeMask', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('OrangeMask', orange_mask)
-            
+
 finally:
 
     # Stop streaming
