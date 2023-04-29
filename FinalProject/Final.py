@@ -62,6 +62,39 @@ markerImage22 = np.zeros((markersize,markersize), dtype = np.uint8)
 
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
 
+def orientation():
+    try:
+            for i in range(len(ids)):
+                if(ids[i]) == 22:
+                    print("found mine")
+                    box = corners[i][0]
+                    cX = int((box[0][0] + box[1][0]) / 2)
+                    cY = int((box[1][1] + box[3][1]) / 2)
+                    depthToMine = depth_frame.get_distance(cX,cY)
+
+                    if cX >= 400:
+                        motors = 5100
+                        tango.setTarget(MOTORS,motors)
+                    elif cX < 200:
+                        motors = 6900
+                        tango.setTarget(MOTORS,motors)
+                    elif cX < 400 and cX > 200:
+                        if depthToMine > 1:
+                            motors = 6000
+                            tango.setTarget(MOTORS,motors)
+                            pass
+    except TypeError:
+            body = 6000
+            tango.setTarget(BODY,body)
+            motors = 6000
+            tango.setTarget(MOTORS,motors)
+
+def walkForward():
+    tango.setTarget(MOTORS,motors)
+    for x in range(10):
+        motors = 5100
+    motors = 6000
+
 try:
     while True:
 
@@ -92,36 +125,9 @@ try:
         cv2.imshow('RobotVision', color_image)
         cv2.waitKey(1)
 
-        try:
-            for i in range(len(ids)):
-                if(ids[i]) == 22:
-                    print("found mine")
-                    box = corners[i][0]
-                    cX = int((box[0][0] + box[1][0]) / 2)
-                    cY = int((box[1][1] + box[3][1]) / 2)
-                    depthToMine = depth_frame.get_distance(cX,cY)
+        orientation()
+        walkForward()
 
-                    if cX >= 400:
-                        motors = 5100
-                        tango.setTarget(MOTORS,motors)
-                    elif cX < 200:
-                        motors = 6900
-                        tango.setTarget(MOTORS,motors)
-                    elif cX < 400 and cX > 200:
-                        if depthToMine > 1:
-                            motors = 6000
-                            tango.setTarget(MOTORS,motors)
-                            body = 5200
-                            tango.setTarget(BODY,body)
-                    if depthToMine < 1:
-                        print("Entered Mining Area!")
-                        body = 6000
-                        tango.setTarget(BODY,body)
-        except TypeError:
-            body = 6000
-            tango.setTarget(BODY,body)
-            motors = 5100
-            tango.setTarget(MOTORS,motors)
 
 
 
