@@ -85,7 +85,7 @@ try:
         else:
             images = np.hstack((color_image, depth_colormap))
 
-        corners, ids = cv2.aruco.detectMarkers(color_frame, cv2.arucoDict)
+        corners, ids = cv2.aruco.detectMarkers(color_frame, aruco_dict)
         depthToMine = None
         
         try:
