@@ -1,7 +1,7 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
-from maestro import Controller                                                     
+from maestro import Controller 
 
 MOTORS = 1
 TURN = 2
@@ -56,8 +56,6 @@ color_frame = frames.get_color_frame()
 # Convert images to numpy arrays
 color_image = np.asanyarray(color_frame.get_data())
 
-
-
 try:
     while True:
 
@@ -67,19 +65,19 @@ try:
 
         # Convert images to numpy arrays
         color_image = np.asanyarray(color_frame.get_data())
-
+        
         color_colormap_dim = color_image.shape
 
         hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
 
+        orange_lower = np.array([0, 100, 20], np.uint8)
         orange_lower = np.array([0, 200, 20], np.uint8)
         orange_upper = np.array([60, 255, 255], np.uint8)
         orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
 
         cv2.namedWindow('OrangeMask', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('OrangeMask', orange_mask)
-
+        cv2.waitKey(1)
 finally:
-
     # Stop streaming
     pipeline.stop()
