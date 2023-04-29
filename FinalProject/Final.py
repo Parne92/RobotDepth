@@ -122,34 +122,34 @@ try:
         cv2.waitKey(1)
 
         detected = False
-        try:
-            for i in range(len(ids)):
-                if(ids[i]) == 22:
-                    print("found mine")
-                    box = corners[i][0]
-                    cX = int((box[0][0] + box[1][0]) / 2)
-                    cY = int((box[1][1] + box[3][1]) / 2)
-                    depthToMine = depth_frame.get_distance(cX,cY)
+        if(detected == False):
+            try:
+                for i in range(len(ids)):
+                    if(ids[i]) == 22:
+                        print("found mine")
+                        box = corners[i][0]
+                        cX = int((box[0][0] + box[1][0]) / 2)
+                        cY = int((box[1][1] + box[3][1]) / 2)
+                        depthToMine = depth_frame.get_distance(cX,cY)
 
-                    if cX >= 400:
-                        motors = 5100
-                        tango.setTarget(MOTORS,motors)
-                    elif cX < 200:
-                        motors = 6900
-                        tango.setTarget(MOTORS,motors)
-                    elif cX < 400 and cX > 200:
-                        if depthToMine > 1:
-                            motors = 6000
+                        if cX >= 400:
+                            motors = 5100
                             tango.setTarget(MOTORS,motors)
-                            body = 5400
-                            tango.setTarget(BODY,body)
+                        elif cX < 200:
+                            motors = 6900
+                            tango.setTarget(MOTORS,motors)
+                        elif cX < 400 and cX > 200:
+                            while depthToMine > 1:
+                                motors = 6000
+                                tango.setTarget(MOTORS,motors)
+                                body = 5400
+                                tango.setTarget(BODY,body)
                             detected = True
-                            pass
-        except TypeError:
-            body = 6000
-            tango.setTarget(BODY,body)
-            motors = 5100
-            tango.setTarget(MOTORS,motors)
+            except TypeError:
+                body = 6000
+                tango.setTarget(BODY,body)
+                motors = 5100
+                tango.setTarget(MOTORS,motors)
     
         
 
