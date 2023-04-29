@@ -62,7 +62,7 @@ color_image = np.asanyarray(color_frame.get_data())
 
 color_to_save = ""
 
-def orientation(hsv, say):
+def orientation(motors,hsv, say):
 
     # Set range for red color and 
     # define mask
@@ -265,7 +265,7 @@ try:
         cv2.imshow("Image", color_image)
         hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
 
-        orientation(hsv,"Entering Mining Area")
+        orientation(motors,hsv,"Entering Mining Area")
         findFace()
         findColor(hsv)
         orientation(hsv,"Entering Goal Area")
