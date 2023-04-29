@@ -141,6 +141,8 @@ try:
                         if depthToMine > 1:
                             motors = 6000
                             tango.setTarget(MOTORS,motors)
+                            body = 5400
+                            tango.setTarget(BODY,body)
                             detected = True
                             pass
         except TypeError:
@@ -148,13 +150,7 @@ try:
             tango.setTarget(BODY,body)
             motors = 6000
             tango.setTarget(MOTORS,motors)
-        
-        if(detected == True):
-            tango.setTarget(MOTORS,motors)
-            motors = 5200
-            time.sleep(3)
-            tango.setTarget(MOTORS,motors)
-            motors = 6000
+    
         
 
 
