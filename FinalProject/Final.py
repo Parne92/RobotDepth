@@ -150,6 +150,8 @@ try:
                 tango.setTarget(BODY,body)
                 motors = 5100
                 tango.setTarget(MOTORS,motors)
+        body = 6000
+        tango.setTarget(BODY,body)
     
         
 
