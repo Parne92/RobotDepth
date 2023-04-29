@@ -111,7 +111,7 @@ try:
                         if depthToMine > 1:
                             motors = 6000
                             tango.setTarget(MOTORS,motors)
-                            body = 4900
+                            body = 5500
                             tango.setTarget(BODY,body)
                     if depthToMine < 1:
                         print("Entered Mining Area!")
@@ -123,7 +123,7 @@ try:
             motors = 5100
             tango.setTarget(MOTORS,motors)
 
-        
+
 
 finally:    
     # Stop streaming
