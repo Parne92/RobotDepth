@@ -3,7 +3,6 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
-from pupil_apriltags import Detector
 from maestro import Controller                                                    
 
 MOTORS = 1
@@ -14,18 +13,6 @@ tango = Controller()
 motors = 6000
 turns = 6000
 body = 6000
-
-#tag detector
-at_detector = Detector(
-    families = "tag36h11",
-    nthreads = 1,
-    quad_decimate=1.0,
-    quad_sigma = 0.0,
-    refine_edges = 1,
-    decode_sharpening = 0.25,
-    debug=0
-)
-
 
 # Configure depth and color streams
 pipeline = rs.pipeline()
@@ -75,25 +62,45 @@ color_image = np.asanyarray(color_frame.get_data())
 
 color_to_save = ""
 
-def orientation(id,say):
-    gray = cv2.cvtColor(color_image, cv2.COLOR_BGR2GRAY)
-    detected = at_detector.detect(gray)
-    if detected:
-        tag = detected[0]
-        if tag.tag_id == id:
-            oriented = True
-            #Stop Rotation
-        (cX,cY) = int (int(tag.center[0]),int(tag.center[1]))
-        depth = depth_frame.get_distance(cX,cY)
-        distance = int(0.01 / depth)
-        distanceText = "distance from tag" + str(tag.tag_id) + ": " + str(round(depth,2))
-        cv2.putText(color_image,distanceText,(20,200), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1)
-        x1,y1 = int(tag.corners[0][0]), int(tag.corners[0][1])
-        x2,y2 = int(tag.corners[2][0]), int(tag.corners[2][1])
-        cv2.rectangle(color_image, (x1,y1), (x2,y2), (0,255,0), 2)
-        ##Move until distance is within threshold
+def orientation(say):
+    hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
 
-        speak(say)
+    # Set range for red color and 
+    # define mask
+    orange_lower = np.array([10, 100, 20], np.uint8)
+    orange_upper = np.array([25, 255, 255], np.uint8)
+    orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
+
+    Moments = cv2.moments(orange_mask)
+    
+    if Moments["m00"] != 0:
+        cX = int(Moments["m10"] / Moments["m00"])
+    else:
+        cX = 1000
+    
+    while(cX > 370 or cX < 270):
+        Moments = cv2.moments(orange_mask)
+    
+        if Moments["m00"] != 0:
+            cX = int(Moments["m10"] / Moments["m00"])
+        else:
+            cX = 0
+        if (cX > 370):
+            motors -= 200
+            if(motors < 5000):
+                motors = 5000
+            tango.setTarget(MOTORS, motors)
+        elif (cX < 270):
+            motors += 200
+            if(motors > 7000):
+                motors = 7000
+            tango.setTarget(MOTORS, motors)
+        else:
+            motors = 6000
+            tango.setTarget(MOTORS, motors)
+
+    ##Make it Drive Across
+    speak(say)
 
 def findFace():
     #Move head of robot up if needed to find a face.
@@ -109,7 +116,7 @@ def findFace():
     speak("Ice Please :)")
 
 def speak(say):
-    for X in range(20):
+    for X in range(4):
         print(say)
 
 
@@ -144,20 +151,17 @@ def findColor():
       
     # For red color
     yellow_mask = cv2.dilate(yellow_mask, kernel)
-    res_yellow = cv2.bitwise_and(color_image, color_image, mask = yellow_mask)
       
     # For green color
     green_mask = cv2.dilate(green_mask, kernel)
-    res_green = cv2.bitwise_and(color_image, color_image,mask = green_mask)
       
     # For blue color
     pink_mask = cv2.dilate(pink_mask, kernel)
-    res_pink = cv2.bitwise_and(color_image, color_image,mask = pink_mask)
    
     # Creating contour to track red color
     contours = cv2.findContours(yellow_mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
         
-    for pic, contour in enumerate(contours):
+    for contour in enumerate(contours):
         area = cv2.contourArea(contour)
         if(area > 300):
             color_to_save = "yellow"
@@ -168,7 +172,7 @@ def findColor():
     # Creating contour to track green color
     contours = cv2.findContours(green_mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
       
-    for pic, contour in enumerate(contours):
+    for contour in enumerate(contours):
         area = cv2.contourArea(contour)
         if(area > 300):
             color_to_save = "green"
@@ -178,7 +182,7 @@ def findColor():
 
     contours = cv2.findContours(pink_mask, cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 
-    for pic, contour in enumerate(contours):
+    for contour in enumerate(contours):
         area = cv2.contourArea(contour)
         if(area > 300):
             color_to_save = "pink"
@@ -201,7 +205,7 @@ def findGoal(color_to_save):
 
         contours = cv2.findContours(yellow_mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
         
-        for pic, contour in enumerate(contours):
+        for contour in enumerate(contours):
             area = cv2.contourArea(contour)
             if(area > 300):
                 x, y, w, h = cv2.boundingRect(contour)
@@ -214,11 +218,10 @@ def findGoal(color_to_save):
         green_mask = cv2.inRange(hsv, green_lower, green_upper)
 
         green_mask = cv2.dilate(green_mask, kernel)
-        res_green = cv2.bitwise_and(color_image, color_image,mask = green_mask)
 
         contours = cv2.findContours(green_mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
       
-        for pic, contour in enumerate(contours):
+        for contour in enumerate(contours):
             area = cv2.contourArea(contour)
             if(area > 300):
                 x, y, w, h = cv2.boundingRect(contour)
@@ -232,11 +235,10 @@ def findGoal(color_to_save):
         pink_mask = cv2.inRange(hsv, pink_lower, pink_upper)
 
         pink_mask = cv2.dilate(pink_mask, kernel)
-        res_pink = cv2.bitwise_and(color_image, color_image,mask = pink_mask)
 
         contours = cv2.findContours(pink_mask, cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 
-        for pic, contour in enumerate(contours):
+        for contour in enumerate(contours):
             area = cv2.contourArea(contour)
             if(area > 300):
                 x, y, w, h = cv2.boundingRect(contour)
@@ -265,10 +267,10 @@ try:
         # Display Image and Mask
         cv2.imshow("Image", color_image)
 
-        orientation(1, "Entering Mining Area")
+        orientation("Entering Mining Area")
         findFace()
         findColor()
-        orientation(0,"Entering Goal Area")
+        orientation("Entering Goal Area")
         findGoal(color_to_save)
         stopMovement()
 
