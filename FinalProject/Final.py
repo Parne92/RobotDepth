@@ -52,6 +52,7 @@ frames = pipeline.wait_for_frames()
 # Align the depth frame to color frame
 aligned_frames = align.process(frames)
 color_frame = frames.get_color_frame()
+depth_frame = frames.get_depth_frame()
 
 # Convert images to numpy arrays
 color_image = np.asanyarray(color_frame.get_data())
@@ -78,7 +79,35 @@ try:
 
         cv2.namedWindow('OrangeMask', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('OrangeMask', orange_mask)
-        cv2.waitKey(1)
+
+        Moments = cv2.moments(orange_mask)
+
+        
+        if Moments["m00"] != 0:
+            cX = int(Moments["m10"] / Moments["m00"])
+            cY = int(Moments["m01"] / Moments["m00"])
+        else:
+            cX, cY = 0,0
+        cv2.circle(orange_mask, (cX, cY), 5, (0, 165, 255), -1)
+
+        aligned = False
+        while(aligned == False):
+            if (cX > 370):
+                motors -= 100
+                if(motors < 5000):
+                    motors = 5000
+                tango.setTarget(MOTORS, motors)
+            elif (cX < 270):
+                motors += 100
+                if(motors > 7000):
+                    motors = 7000
+                tango.setTarget(MOTORS, motors)
+            else:
+                motors = 6000
+                tango.setTarget(MOTORS, motors)
+                aligned = True
+        
+        
 finally:
 
     # Stop streaming
