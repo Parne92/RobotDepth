@@ -79,6 +79,7 @@ try:
 
         cv2.namedWindow('OrangeMask', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('OrangeMask', orange_mask)
+        print("IMAGE SHOULD SHOW")
 
         Moments = cv2.moments(orange_mask)
 
