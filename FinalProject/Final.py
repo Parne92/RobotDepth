@@ -83,7 +83,7 @@ try:
         else:
             cX, cY = 0,0
 
-        cv2.circle(orange_mask, (cX, cY), 5, (0, 155, 255), -1)
+        cv2.circle(orange_mask, (cX, cY), 5, (0, 165, 255), -1)
 
         cv2.namedWindow('OrangeMask', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('OrangeMask', orange_mask)
