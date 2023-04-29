@@ -62,8 +62,7 @@ color_image = np.asanyarray(color_frame.get_data())
 
 color_to_save = ""
 
-def orientation(say):
-    hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
+def orientation(hsv, say):
 
     # Set range for red color and 
     # define mask
@@ -120,9 +119,8 @@ def speak(say):
         print(say)
 
 
-def findColor():
+def findColor(hsv):
     # Convert Image to Image HSV
-    hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
 
     # Set range for red color and 
     # define mask
@@ -192,8 +190,7 @@ def findColor():
     speak("Color of Ice: " + color_to_save)
     return color_to_save
 
-def findGoal(color_to_save):
-    hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
+def findGoal(hsv,color_to_save):
     kernel = np.ones((5, 5), "uint8")
     if color_to_save == "yellow":
         yellow_lower = np.array([33, 80, 56], np.uint8)
@@ -266,12 +263,13 @@ try:
 
         # Display Image and Mask
         cv2.imshow("Image", color_image)
+        hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
 
-        orientation("Entering Mining Area")
+        orientation(hsv,"Entering Mining Area")
         findFace()
-        findColor()
-        orientation("Entering Goal Area")
-        findGoal(color_to_save)
+        findColor(hsv)
+        orientation(hsv,"Entering Goal Area")
+        findGoal(hsv,color_to_save)
         stopMovement()
 
         if cv2.waitKey(10) & 0xFF == ord('q'):
