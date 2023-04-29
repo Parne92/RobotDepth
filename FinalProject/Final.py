@@ -56,6 +56,11 @@ depth_frame = frames.get_depth_frame()
 # Convert images to numpy arrays
 color_image = np.asanyarray(color_frame.get_data())
 
+inMiningArea = False
+foundFace = False
+savedColor = None
+
+
 try:
     while True:
 
@@ -78,50 +83,49 @@ try:
         else:
             images = np.hstack((color_image, depth_colormap))
         hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
-        orange_lower = np.array([0, 50, 20], np.uint8)
-        orange_lower = np.array([0, 200, 20], np.uint8)
-        orange_upper = np.array([60, 255, 255], np.uint8)
-        orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
-        Moments = cv2.moments(orange_mask)
-        if Moments["m00"] != 0:
-            cX = int(Moments["m10"] / Moments["m00"])
-            cY = int(Moments["m01"] / Moments["m00"])
-        else:
-            cX, cY = 0,0
-        cv2.circle(color_image, (cX, cY), 5, (0, 165, 255), -1)
 
-        distance = depth_frame.get_distance(cX,cY)
+        if(inMiningArea == False):
+            orange_lower = np.array([0, 50, 20], np.uint8)
+            orange_lower = np.array([0, 200, 20], np.uint8)
+            orange_upper = np.array([60, 255, 255], np.uint8)
+            orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
+            Moments = cv2.moments(orange_mask)
+            if Moments["m00"] != 0:
+                cX = int(Moments["m10"] / Moments["m00"])
+                cY = int(Moments["m01"] / Moments["m00"])
+            else:
+                cX, cY = 0,0
+            cv2.circle(color_image, (cX, cY), 5, (0, 165, 255), -1)
 
-        cv2.namedWindow('ColorImage', cv2.WINDOW_AUTOSIZE)
-        cv2.imshow('ColorImage', color_image)
-        cv2.waitKey(1)
+            distance = depth_frame.get_distance(cX,cY)
 
-        if (cX > 370):
-            motors -= 200
-            if(motors < 5000):
-                motors = 5000
+        
+            if (cX > 370):
+                motors -= 200
+                if(motors < 5000):
+                    motors = 5000
+                    tango.setTarget(MOTORS, motors)
+            elif (cX < 270):
+                motors += 200
+                if(motors > 7000):
+                    motors = 7000
+                    tango.setTarget(MOTORS, motors)
+            else:
+                motors = 6000
                 tango.setTarget(MOTORS, motors)
-        elif (cX < 270):
-            motors += 200
-            if(motors > 7000):
-                motors = 7000
-                tango.setTarget(MOTORS, motors)
-        else:
-            motors = 6000
-            tango.setTarget(MOTORS, motors)
 
-        if(distance > 1.5):
-            motors = 6000
-            tango.setTarget(MOTORS,motors)
-            body = 5200            
-            tango.setTarget(BODY,body)
-        else:
-            body = 6000
-            tango.setTarget(BODY,body)
-
-        print("distance: " + str(distance))
-        print("cX : " + str(cX))
-        print("Entered Mining Area")
+            if(distance > 1.5):
+                motors = 6000
+                tango.setTarget(MOTORS,motors)
+                body = 5200            
+                tango.setTarget(BODY,body)
+            else:
+                body = 6000
+                tango.setTarget(BODY,body)
+                print("Entered Mining Area!")
+                inMiningArea = True
+        if(inMiningArea == True and foundFace == False):
+            pass
 finally:
     # Stop streaming
     pipeline.stop()
