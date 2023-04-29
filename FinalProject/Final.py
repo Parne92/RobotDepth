@@ -123,8 +123,8 @@ try:
                 body = 7900
                 tango.setTarget(BODY,body)
 
-        print("distance: " + distance)
-        print("cX : " + cX)
+        print("distance: " + str(distance))
+        print("cX : " + str(cX))
         print("Entered Mining Area")
 finally:
     # Stop streaming
