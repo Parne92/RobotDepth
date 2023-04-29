@@ -121,6 +121,7 @@ try:
         cv2.imshow('RobotVision', color_image)
         cv2.waitKey(1)
 
+        detected = False
         try:
             for i in range(len(ids)):
                 if(ids[i]) == 22:
@@ -140,6 +141,7 @@ try:
                         if depthToMine > 1:
                             motors = 6000
                             tango.setTarget(MOTORS,motors)
+                            detected = True
                             pass
         except TypeError:
             body = 6000
@@ -147,11 +149,12 @@ try:
             motors = 6000
             tango.setTarget(MOTORS,motors)
         
-        tango.setTarget(MOTORS,motors)
-        motors = 5200
-        time.sleep(3)
-        tango.setTarget(MOTORS,motors)
-        motors = 6000
+        if(detected == True):
+            tango.setTarget(MOTORS,motors)
+            motors = 5200
+            time.sleep(3)
+            tango.setTarget(MOTORS,motors)
+            motors = 6000
         
 
 
