@@ -143,7 +143,7 @@ try:
                             pass
         except TypeError:
             body = 6000
-            tango.setTsarget(BODY,body)
+            tango.setTarget(BODY,body)
             motors = 6000
             tango.setTarget(MOTORS,motors)
         
