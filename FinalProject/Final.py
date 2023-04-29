@@ -78,7 +78,7 @@ try:
         else:
             images = np.hstack((color_image, depth_colormap))
         hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
-        orange_lower = np.array([0, 100, 20], np.uint8)
+        orange_lower = np.array([0, 50, 20], np.uint8)
         orange_lower = np.array([0, 200, 20], np.uint8)
         orange_upper = np.array([60, 255, 255], np.uint8)
         orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
@@ -116,7 +116,7 @@ try:
             if(body >7900):
                 body = 7900
                 tango.setTarget(BODY,body)
-                
+
         print("distance: " + str(distance))
         print("cX : " + str(cX))
         print("Entered Mining Area")
