@@ -1,6 +1,7 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
+import time
 from maestro import Controller
 
 MOTORS = 1
@@ -55,6 +56,8 @@ depth_frame = frames.get_depth_frame()
 
 # Convert images to numpy arrays
 color_image = np.asanyarray(color_frame.get_data())
+
+face_cascade = cv2.CascadeClassifier('data/haarcascades/haarcascade_frontalface_default.xml')
 
 inMiningArea = False
 foundFace = False
@@ -125,7 +128,101 @@ try:
                 print("Entered Mining Area!")
                 inMiningArea = True
         if(inMiningArea == True and foundFace == False):
-            pass
+            gray = cv2.cvtColor(color_image, cv2.COLOR_BGR2GRAY)
+
+            faces = face_cascade.detectMultiScale(gray, 1.1, 5,)
+
+            if(faces == 0):
+                motors = 5400
+                tango.setTarget(MOTORS,motors)
+            elif(faces != 0):
+                for (x,y,w,h) in faces:
+                    cv2.rectangle(color_image,(x,y),(x+w,y+h),(255,0,0),2)
+                cX = (x + (w/2))
+                cY = (y + (h/2))
+
+                distance = depth_frame.get_distance(cX,cY)
+
+                if(distance > 1.5):
+                    motors = 6000
+                    tango.setTarget(MOTORS,motors)
+                    body = 5200            
+                    tango.setTarget(BODY,body)
+                else:
+                    body = 6000
+                    tango.setTarget(BODY,body)
+                    print("Moved to Face!")
+                    foundFace = True
+        if(inMiningArea == True and foundFace == True and savedColor == None):
+            print("AWAITING ICE")
+            time.sleep(5)
+
+            while(savedColor == None):
+                yellow_lower = np.array([33, 80, 56], np.uint8)
+                yellow_upper = np.array([55, 125, 197], np.uint8)
+                yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
+  
+                green_lower = np.array([61, 120, 101], np.uint8)
+                green_upper = np.array([66, 155,212], np.uint8)
+                green_mask = cv2.inRange(hsv, green_lower, green_upper)
+  
+                pink_lower = np.array([120, 111, 126], np.uint8)
+                pink_upper = np.array([179, 255, 255], np.uint8)
+                pink_mask = cv2.inRange(hsv, pink_lower, pink_upper)
+
+                kernel = np.ones((5, 5), "uint8")
+      
+                yellow_mask = cv2.dilate(yellow_mask, kernel)
+                res_yellow = cv2.bitwise_and(color_image, color_image, mask = yellow_mask)
+      
+                green_mask = cv2.dilate(green_mask, kernel)
+                res_green = cv2.bitwise_and(color_image, color_image, mask = green_mask)
+      
+                pink_mask = cv2.dilate(pink_mask, kernel)
+                res_pink = cv2.bitwise_and(color_image, color_image, mask = pink_mask)
+   
+                contours, hierarchy = cv2.findContours(yellow_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        
+                for pic, contour in enumerate(contours):
+                    area = cv2.contourArea(contour)
+                    if(area > 1000):
+                        savedColor = "yellow"
+                        x, y, w, h = cv2.boundingRect(contour)
+                        color_image = cv2.rectangle(color_image, (x, y), 
+                                       (x + w, y + h), 
+                                       (51, 255, 255), 2)
+                
+
+                # Creating contour to track green color
+                contours, hierarchy = cv2.findContours(green_mask,
+                                           cv2.RETR_TREE,
+                                           cv2.CHAIN_APPROX_SIMPLE)
+      
+                for pic, contour in enumerate(contours):
+                    area = cv2.contourArea(contour)
+                    if(area > 1000):
+                        savedColor = "green"
+                        x, y, w, h = cv2.boundingRect(contour)
+                        color_image = cv2.rectangle(color_image, (x, y), 
+                                       (x + w, y + h),
+                                       (0, 255, 0), 2)
+                
+
+                contours, hierarchy = cv2.findContours(pink_mask,
+                                           cv2.RETR_TREE,
+                                           cv2.CHAIN_APPROX_SIMPLE)
+            
+                for pic, contour in enumerate(contours):
+                    area = cv2.contourArea(contour)
+                    if(area > 1000):
+                        savedColor = "pink"
+                        x, y, w, h = cv2.boundingRect(contour)
+                        color_image = cv2.rectangle(color_image, (x, y),
+                                       (x + w, y + h),
+                                       (255, 77, 255), 2)
+            print("COLOR DETECTED: " + savedColor)  
+
+
 finally:
     # Stop streaming
     pipeline.stop()
