@@ -189,11 +189,11 @@ try:
                 cv2.namedWindow('RobotVision', cv2.WINDOW_AUTOSIZE)
                 cv2.imshow('RobotVision', hsv) 
                 cv2.waitKey(1)
-                yellow_lower = np.array([33, 80, 56], np.uint8)
-                yellow_upper = np.array([55, 125, 197], np.uint8)
+                yellow_lower = np.array([51, 50, 50], np.uint8)
+                yellow_upper = np.array([60, 255, 255], np.uint8)
                 yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
   
-                green_lower = np.array([81, 20, 20], np.uint8)
+                green_lower = np.array([81, 50, 50], np.uint8)
                 green_upper = np.array([140, 255,255], np.uint8)
                 green_mask = cv2.inRange(hsv, green_lower, green_upper)
   
