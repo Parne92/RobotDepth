@@ -59,7 +59,7 @@ color_image = np.asanyarray(color_frame.get_data())
 
 face_cascade = cv2.CascadeClassifier('data/haarcascades/haarcascade_frontalface_default.xml')
 
-inMiningArea = False
+inMiningArea = True
 foundFace = False
 savedColor = None
 
