@@ -63,6 +63,7 @@ inMiningArea = False
 foundFace = False
 savedColor = None
 firstLoop = True
+detectedCone = False
 inGoalArea = False
 
 try:
