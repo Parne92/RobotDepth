@@ -193,7 +193,7 @@ try:
                 yellow_upper = np.array([45, 255, 255], np.uint8)
                 yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
   
-                green_lower = np.array([125, 50, 50], np.uint8)
+                green_lower = np.array([120, 50, 50], np.uint8)
                 green_upper = np.array([140, 255,255], np.uint8)
                 green_mask = cv2.inRange(hsv, green_lower, green_upper)
   
