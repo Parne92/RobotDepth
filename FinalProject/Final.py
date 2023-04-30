@@ -185,7 +185,7 @@ try:
 
             cv2.destroyAllWindows()
             print("AWAITING ICE")
-            while(savedColor == None):
+            if(savedColor == None):
                 print("Still awaiting color...")
                 cv2.namedWindow('RobotVision', cv2.WINDOW_AUTOSIZE)
                 cv2.imshow('RobotVision', hsv) 
@@ -252,8 +252,8 @@ try:
                         color_image = cv2.rectangle(color_image, (x, y),
                                        (x + w, y + h),
                                        (255, 77, 255), 2)
-            
-            print("COLOR DETECTED: " + savedColor)  
+            if(savedColor != None):
+                print("COLOR DETECTED: " + savedColor)  
 
 
 finally:
