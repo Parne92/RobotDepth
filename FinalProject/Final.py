@@ -107,8 +107,6 @@ try:
 
             distance = depth_frame.get_distance(cX,cY)
 
-            cv2.namedWindow('FindingCone', cv2.WINDOW_AUTOSIZE)
-            cv2.imshow('FindingCone', color_image) 
 
             if (cX > 370):
                 motors -= 200
@@ -150,6 +148,20 @@ try:
                 cY = int((y + (h/2)))
 
                 distance = depth_frame.get_distance(cX,cY)
+
+                if (cX > 370):
+                    motors -= 200
+                    if(motors < 5000):
+                        motors = 5000
+                        tango.setTarget(MOTORS, motors)
+                elif (cX < 270):
+                    motors += 200
+                    if(motors > 7000):
+                        motors = 7000
+                        tango.setTarget(MOTORS, motors)
+                else:
+                    motors = 6000
+                    tango.setTarget(MOTORS, motors)
 
                 if(distance > 2):
                     motors = 6000
