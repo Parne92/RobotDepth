@@ -63,6 +63,7 @@ inMiningArea = True
 foundFace = False
 savedColor = None
 firstLoop = True
+inGoalArea = False
 
 try:
     while True:
@@ -252,7 +253,68 @@ try:
                                        (x + w, y + h),
                                        (255, 77, 255), 2)
             if(savedColor != None):
-                print("COLOR DETECTED: " + savedColor)  
+                print("COLOR DETECTED: " + savedColor)
+        
+        
+        if(savedColor != None):
+            print("Locating Goal Area")
+            orange_lower = np.array([0, 50, 20], np.uint8)
+            orange_lower = np.array([0, 200, 20], np.uint8)
+            orange_upper = np.array([60, 255, 255], np.uint8)
+            orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
+
+            res_pink = cv2.bitwise_and(color_image, color_image, mask = pink_mask)
+   
+            contours, hierarchy = cv2.findContours(orange_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+            for pic, contour in enumerate(contours):
+                    area = cv2.contourArea(contour)
+                    if(area > 1000):
+                        detectedCone = True
+                        x, y, w, h = cv2.boundingRect(contour)
+                        color_image = cv2.rectangle(color_image, (x, y), 
+                                       (x + w, y + h),
+                                       (0, 255, 0), 2)
+            if(detectedCone == True):   
+                Moments = cv2.moments(orange_mask)
+                if Moments["m00"] != 0:
+                    cX = int(Moments["m10"] / Moments["m00"])
+                    cY = int(Moments["m01"] / Moments["m00"])
+                else:
+                    cX, cY = 0,0
+                cv2.circle(color_image, (cX, cY), 5, (0, 165, 255), -1)
+
+                distance = depth_frame.get_distance(cX,cY)
+
+
+                if (cX > 370):
+                    motors -= 200
+                    if(motors < 5000):
+                        motors = 5000
+                        tango.setTarget(MOTORS, motors)
+                elif (cX < 270):
+                    motors += 200
+                    if(motors > 7000):
+                        motors = 7000
+                        tango.setTarget(MOTORS, motors)
+                else:
+                    motors = 6000
+                    tango.setTarget(MOTORS, motors)
+
+                if(distance > 1.5):
+                    motors = 6000
+                    tango.setTarget(MOTORS,motors)
+                    body = 5200            
+                    tango.setTarget(BODY,body)
+                else:
+                    body = 6000
+                    tango.setTarget(BODY,body)
+                    print("Entered Goal Area!")
+                    inGoalArea = True  
+        else:
+            motors = 5400
+            tango.setTarget(BODY,body)
+    
 
 
 finally:
