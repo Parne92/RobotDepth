@@ -183,8 +183,12 @@ try:
                 for x in range(50):
                     pass
 
+            cv2.destroyAllWindows()
             print("AWAITING ICE")
-            if(savedColor == None):
+            while(savedColor == None):
+                cv2.namedWindow('RobotVision', cv2.WINDOW_AUTOSIZE)
+                cv2.imshow('RobotVision', hsv) 
+                cv2.waitKey(1)
                 yellow_lower = np.array([33, 80, 56], np.uint8)
                 yellow_upper = np.array([55, 125, 197], np.uint8)
                 yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
@@ -247,6 +251,7 @@ try:
                         color_image = cv2.rectangle(color_image, (x, y),
                                        (x + w, y + h),
                                        (255, 77, 255), 2)
+            
             print("COLOR DETECTED: " + savedColor)  
 
 
