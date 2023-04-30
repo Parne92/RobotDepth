@@ -179,11 +179,11 @@ try:
                 tango.setTarget(MOTORS,motors)
                 body = 6000
                 tango.setTarget(BODY,body)
-                print("AWAITING ICE")
                 firstLoop = False
                 for x in range(50):
                     pass
 
+            print("AWAITING ICE")
             while(savedColor == None):
                 yellow_lower = np.array([33, 80, 56], np.uint8)
                 yellow_upper = np.array([55, 125, 197], np.uint8)
