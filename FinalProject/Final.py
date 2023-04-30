@@ -180,13 +180,12 @@ try:
                 body = 6000
                 tango.setTarget(BODY,body)
                 firstLoop = False
+                print("AWAITING ICE")
                 for x in range(50):
                     pass
 
             cv2.destroyAllWindows()
-            print("AWAITING ICE")
             if(savedColor == None):
-                print("Still awaiting color...")
                 cv2.namedWindow('RobotVision', cv2.WINDOW_AUTOSIZE)
                 cv2.imshow('RobotVision', hsv) 
                 cv2.waitKey(1)
@@ -194,8 +193,8 @@ try:
                 yellow_upper = np.array([55, 125, 197], np.uint8)
                 yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
   
-                green_lower = np.array([61, 120, 101], np.uint8)
-                green_upper = np.array([66, 155,212], np.uint8)
+                green_lower = np.array([81, 20, 20], np.uint8)
+                green_upper = np.array([140, 255,255], np.uint8)
                 green_mask = cv2.inRange(hsv, green_lower, green_upper)
   
                 pink_lower = np.array([331, 50, 50], np.uint8)
