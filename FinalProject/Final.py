@@ -189,8 +189,8 @@ try:
                 cv2.namedWindow('RobotVision', cv2.WINDOW_AUTOSIZE)
                 cv2.imshow('RobotVision', hsv) 
                 cv2.waitKey(1)
-                yellow_lower = np.array([30, 0, 20], np.uint8)
-                yellow_upper = np.array([80, 255, 255], np.uint8)
+                yellow_lower = np.array([20, 50, 50], np.uint8)
+                yellow_upper = np.array([45, 255, 255], np.uint8)
                 yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
   
                 green_lower = np.array([100, 50, 50], np.uint8)
