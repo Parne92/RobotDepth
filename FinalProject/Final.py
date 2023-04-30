@@ -198,8 +198,8 @@ try:
                 green_upper = np.array([66, 155,212], np.uint8)
                 green_mask = cv2.inRange(hsv, green_lower, green_upper)
   
-                pink_lower = np.array([120, 111, 126], np.uint8)
-                pink_upper = np.array([179, 255, 255], np.uint8)
+                pink_lower = np.array([331, 50, 50], np.uint8)
+                pink_upper = np.array([345, 255, 255], np.uint8)
                 pink_mask = cv2.inRange(hsv, pink_lower, pink_upper)
 
                 kernel = np.ones((5, 5), "uint8")
