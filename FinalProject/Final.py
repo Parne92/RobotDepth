@@ -258,12 +258,11 @@ try:
         
         if(savedColor != None):
             print("Locating Goal Area")
-            orange_lower = np.array([0, 50, 20], np.uint8)
             orange_lower = np.array([0, 200, 20], np.uint8)
             orange_upper = np.array([60, 255, 255], np.uint8)
             orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
 
-            res_pink = cv2.bitwise_and(color_image, color_image, mask = pink_mask)
+            res_orange = cv2.bitwise_and(color_image, color_image, mask = orange_mask)
    
             contours, hierarchy = cv2.findContours(orange_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -288,15 +287,11 @@ try:
 
 
                 if (cX > 370):
-                    motors -= 200
-                    if(motors < 5000):
-                        motors = 5000
-                        tango.setTarget(MOTORS, motors)
+                    motors = 5400
+                    tango.setTarget(MOTORS, motors)
                 elif (cX < 270):
-                    motors += 200
-                    if(motors > 7000):
-                        motors = 7000
-                        tango.setTarget(MOTORS, motors)
+                    motors = 6500
+                    tango.setTarget(MOTORS, motors)
                 else:
                     motors = 6000
                     tango.setTarget(MOTORS, motors)
