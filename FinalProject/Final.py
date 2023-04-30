@@ -181,7 +181,7 @@ try:
                 tango.setTarget(BODY,body)
                 firstLoop = False
                 print("AWAITING ICE")
-                for x in range(50):
+                for x in range(5000000):
                     pass
 
             cv2.destroyAllWindows()
