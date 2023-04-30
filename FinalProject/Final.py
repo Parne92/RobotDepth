@@ -139,6 +139,7 @@ try:
                 motors = 5400
                 tango.setTarget(MOTORS,motors)
             elif(len(faces) != 0):
+                print("Found Face!")
                 for (x,y,w,h) in faces:
                     cv2.rectangle(color_image,(x,y),(x+w,y+h),(255,0,0),2)
                 cX = int((x + (w/2)))
@@ -146,7 +147,7 @@ try:
 
                 distance = depth_frame.get_distance(cX,cY)
 
-                if(distance > 1.5):
+                if(distance > 2):
                     motors = 6000
                     tango.setTarget(MOTORS,motors)
                     body = 5200            
