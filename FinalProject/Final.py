@@ -132,10 +132,10 @@ try:
 
             faces = face_cascade.detectMultiScale(gray, 1.1, 5,)
 
-            if(faces == 0):
+            if(len(faces) == 0):
                 motors = 5400
                 tango.setTarget(MOTORS,motors)
-            elif(faces != 0):
+            elif(len(faces) != 0):
                 for (x,y,w,h) in faces:
                     cv2.rectangle(color_image,(x,y),(x+w,y+h),(255,0,0),2)
                 cX = (x + (w/2))
