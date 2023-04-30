@@ -59,6 +59,18 @@ color_image = np.asanyarray(color_frame.get_data())
 
 face_cascade = cv2.CascadeClassifier('data/haarcascades/haarcascade_frontalface_default.xml')
 
+yellow_lower = np.array([20, 50, 50], np.uint8)
+yellow_upper = np.array([35, 255, 255], np.uint8)
+
+green_lower = np.array([40, 50, 50], np.uint8)
+green_upper = np.array([70, 255,255], np.uint8)
+
+pink_lower = np.array([145, 50, 50], np.uint8)
+pink_upper = np.array([160, 255, 255], np.uint8)
+
+orange_lower = np.array([0, 200, 20], np.uint8)
+orange_upper = np.array([60, 255, 255], np.uint8)
+
 inMiningArea = False
 foundFace = False
 savedColor = None
@@ -96,9 +108,6 @@ try:
 
 
         if(inMiningArea == False):
-            orange_lower = np.array([0, 50, 20], np.uint8)
-            orange_lower = np.array([0, 200, 20], np.uint8)
-            orange_upper = np.array([60, 255, 255], np.uint8)
             orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
             Moments = cv2.moments(orange_mask)
             if Moments["m00"] != 0:
@@ -192,16 +201,10 @@ try:
                 cv2.namedWindow('RobotVision', cv2.WINDOW_AUTOSIZE)
                 cv2.imshow('RobotVision', hsv) 
                 cv2.waitKey(1)
-                yellow_lower = np.array([20, 50, 50], np.uint8)
-                yellow_upper = np.array([35, 255, 255], np.uint8)
                 yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
   
-                green_lower = np.array([40, 50, 50], np.uint8)
-                green_upper = np.array([70, 255,255], np.uint8)
                 green_mask = cv2.inRange(hsv, green_lower, green_upper)
   
-                pink_lower = np.array([145, 50, 50], np.uint8)
-                pink_upper = np.array([160, 255, 255], np.uint8)
                 pink_mask = cv2.inRange(hsv, pink_lower, pink_upper)
 
                 kernel = np.ones((5, 5), "uint8")
@@ -259,8 +262,6 @@ try:
         
         
         if(savedColor != None):
-            orange_lower = np.array([0, 200, 20], np.uint8)
-            orange_upper = np.array([60, 255, 255], np.uint8)
             orange_mask = cv2.inRange(hsv, orange_lower, orange_upper)
 
             res_orange = cv2.bitwise_and(color_image, color_image, mask = orange_mask)
@@ -314,18 +315,12 @@ try:
         
         if(inGoalArea == True):
             if(savedColor == "yellow"):
-                yellow_lower = np.array([20, 50, 50], np.uint8)
-                yellow_upper = np.array([35, 255, 255], np.uint8)
                 color_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
 
             if(savedColor == "green"):
-                green_lower = np.array([40, 50, 50], np.uint8)
-                green_upper = np.array([70, 255,255], np.uint8)
                 color_mask = cv2.inRange(hsv, green_lower, green_upper)
   
             if(savedColor == "pink"):
-                pink_lower = np.array([145, 50, 50], np.uint8)
-                pink_upper = np.array([160, 255, 255], np.uint8)
                 color_mask = cv2.inRange(hsv, pink_lower, pink_upper)
             
             Moments = cv2.moments(color_mask)
