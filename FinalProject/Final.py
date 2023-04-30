@@ -89,6 +89,8 @@ try:
 
         cv2.namedWindow('RobotVision', cv2.WINDOW_AUTOSIZE)
         cv2.imshow('RobotVision', color_image) 
+        cv2.waitKey(1)
+
 
         if(inMiningArea == False):
             orange_lower = np.array([0, 50, 20], np.uint8)
@@ -105,7 +107,9 @@ try:
 
             distance = depth_frame.get_distance(cX,cY)
 
-        
+            cv2.namedWindow('FindingCone', cv2.WINDOW_AUTOSIZE)
+            cv2.imshow('FindingCone', color_image) 
+
             if (cX > 370):
                 motors -= 200
                 if(motors < 5000):
