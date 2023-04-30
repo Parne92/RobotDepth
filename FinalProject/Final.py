@@ -181,6 +181,8 @@ try:
                 tango.setTarget(BODY,body)
                 print("AWAITING ICE")
                 firstLoop = False
+                for x in range(50):
+                    pass
 
             while(savedColor == None):
                 yellow_lower = np.array([33, 80, 56], np.uint8)
