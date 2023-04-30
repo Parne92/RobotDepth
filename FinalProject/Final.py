@@ -184,7 +184,7 @@ try:
                     pass
 
             print("AWAITING ICE")
-            while(savedColor == None):
+            if(savedColor == None):
                 yellow_lower = np.array([33, 80, 56], np.uint8)
                 yellow_upper = np.array([55, 125, 197], np.uint8)
                 yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
