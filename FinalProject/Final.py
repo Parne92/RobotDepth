@@ -138,8 +138,8 @@ try:
             elif(len(faces) != 0):
                 for (x,y,w,h) in faces:
                     cv2.rectangle(color_image,(x,y),(x+w,y+h),(255,0,0),2)
-                cX = (x + (w/2))
-                cY = (y + (h/2))
+                cX = int((x + (w/2)))
+                cY = int((y + (h/2)))
 
                 distance = depth_frame.get_distance(cX,cY)
 
