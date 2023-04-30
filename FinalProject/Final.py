@@ -186,6 +186,7 @@ try:
             cv2.destroyAllWindows()
             print("AWAITING ICE")
             while(savedColor == None):
+                print("Still awaiting color...")
                 cv2.namedWindow('RobotVision', cv2.WINDOW_AUTOSIZE)
                 cv2.imshow('RobotVision', hsv) 
                 cv2.waitKey(1)
