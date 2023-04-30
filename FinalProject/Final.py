@@ -190,15 +190,15 @@ try:
                 cv2.imshow('RobotVision', hsv) 
                 cv2.waitKey(1)
                 yellow_lower = np.array([20, 50, 50], np.uint8)
-                yellow_upper = np.array([45, 255, 255], np.uint8)
+                yellow_upper = np.array([35, 255, 255], np.uint8)
                 yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
   
-                green_lower = np.array([120, 50, 50], np.uint8)
-                green_upper = np.array([140, 255,255], np.uint8)
+                green_lower = np.array([40, 50, 50], np.uint8)
+                green_upper = np.array([70, 255,255], np.uint8)
                 green_mask = cv2.inRange(hsv, green_lower, green_upper)
   
-                pink_lower = np.array([331, 50, 50], np.uint8)
-                pink_upper = np.array([345, 255, 255], np.uint8)
+                pink_lower = np.array([145, 50, 50], np.uint8)
+                pink_upper = np.array([160, 255, 255], np.uint8)
                 pink_mask = cv2.inRange(hsv, pink_lower, pink_upper)
 
                 kernel = np.ones((5, 5), "uint8")
