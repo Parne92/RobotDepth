@@ -62,7 +62,7 @@ face_cascade = cv2.CascadeClassifier('data/haarcascades/haarcascade_frontalface_
 inMiningArea = True
 foundFace = False
 savedColor = None
-
+firstLoop = True
 
 try:
     while True:
@@ -174,8 +174,14 @@ try:
                     print("Moved to Face!")
                     foundFace = True
         if(inMiningArea == True and foundFace == True and savedColor == None):
-            print("AWAITING ICE")
-            time.sleep(5)
+            if(firstLoop == True):
+                motors = 6000
+                tango.setTarget(MOTORS,motors)
+                body = 6000
+                tango.setTarget(BODY,body)
+                print("AWAITING ICE")
+                firstLoop = False
+                time.sleep(5)
 
             while(savedColor == None):
                 yellow_lower = np.array([33, 80, 56], np.uint8)
