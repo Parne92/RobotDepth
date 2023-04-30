@@ -1,7 +1,6 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
-import time
 from maestro import Controller
 
 MOTORS = 1
@@ -59,14 +58,14 @@ color_image = np.asanyarray(color_frame.get_data())
 
 face_cascade = cv2.CascadeClassifier('data/haarcascades/haarcascade_frontalface_default.xml')
 
-yellow_lower = np.array([20, 50, 50], np.uint8)
-yellow_upper = np.array([35, 255, 255], np.uint8)
+yellow_lower = np.array([120, 150, 150], np.uint8)
+yellow_upper = np.array([200, 255, 200], np.uint8)
 
-green_lower = np.array([40, 50, 50], np.uint8)
-green_upper = np.array([70, 255,255], np.uint8)
+green_lower = np.array([140, 220, 40], np.uint8)
+green_upper = np.array([180, 255,100], np.uint8)
 
-pink_lower = np.array([145, 50, 50], np.uint8)
-pink_upper = np.array([160, 255, 255], np.uint8)
+pink_lower = np.array([150, 0, 150], np.uint8)
+pink_upper = np.array([255, 100, 255], np.uint8)
 
 orange_lower = np.array([0, 200, 20], np.uint8)
 orange_upper = np.array([60, 255, 255], np.uint8)
@@ -201,11 +200,11 @@ try:
                 cv2.namedWindow('RobotVision', cv2.WINDOW_AUTOSIZE)
                 cv2.imshow('RobotVision', hsv) 
                 cv2.waitKey(1)
-                yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
+                yellow_mask = cv2.inRange(color_image, yellow_lower, yellow_upper)
   
-                green_mask = cv2.inRange(hsv, green_lower, green_upper)
+                green_mask = cv2.inRange(color_image, green_lower, green_upper)
   
-                pink_mask = cv2.inRange(hsv, pink_lower, pink_upper)
+                pink_mask = cv2.inRange(color_image, pink_lower, pink_upper)
 
                 kernel = np.ones((5, 5), "uint8")
       
@@ -315,13 +314,13 @@ try:
         
         if(inGoalArea == True):
             if(savedColor == "yellow"):
-                color_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
+                color_mask = cv2.inRange(color_image, yellow_lower, yellow_upper)
 
             if(savedColor == "green"):
-                color_mask = cv2.inRange(hsv, green_lower, green_upper)
+                color_mask = cv2.inRange(color_image, green_lower, green_upper)
   
             if(savedColor == "pink"):
-                color_mask = cv2.inRange(hsv, pink_lower, pink_upper)
+                color_mask = cv2.inRange(color_image, pink_lower, pink_upper)
             
             Moments = cv2.moments(color_mask)
             if Moments["m00"] != 0:
