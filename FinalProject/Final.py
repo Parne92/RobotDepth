@@ -195,11 +195,7 @@ try:
                 for x in range(5000000):
                     pass
 
-            cv2.destroyAllWindows()
             if(savedColor == None):
-                cv2.namedWindow('RobotVision', cv2.WINDOW_AUTOSIZE)
-                cv2.imshow('RobotVision', hsv) 
-                cv2.waitKey(1)
                 yellow_mask = cv2.inRange(color_image, yellow_lower, yellow_upper)
   
                 green_mask = cv2.inRange(color_image, green_lower, green_upper)
