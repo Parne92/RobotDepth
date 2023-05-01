@@ -143,6 +143,7 @@ try:
                 tango.setTarget(BODY,body)
                 print("Entered Mining Area!")
                 inMiningArea = True
+        
         if(inMiningArea == True and foundFace == False):
             gray = cv2.cvtColor(color_image, cv2.COLOR_BGR2GRAY)
 
@@ -184,6 +185,7 @@ try:
                     tango.setTarget(BODY,body)
                     print("Moved to Face!")
                     foundFace = True
+        
         if(inMiningArea == True and foundFace == True and savedColor == None):
             if(firstLoop == True):
                 motors = 6000
@@ -343,7 +345,7 @@ try:
                 motors = 6000
                 tango.setTarget(MOTORS, motors)
 
-            if(distance > 1.5):
+            if(distance > 0.5):
                 motors = 6000
                 tango.setTarget(MOTORS,motors)
                 body = 5200            
@@ -359,6 +361,8 @@ try:
             tango.setTarget(MOTORS,motors)
             body = 6000
             tango.setTarget(BODY,body)
+            cv2.destroyAllWindows()
+            break
     
 
 
