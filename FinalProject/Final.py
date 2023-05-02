@@ -195,7 +195,7 @@ try:
                 firstLoop = False
                 print("AWAITING ICE")
                 counter  = 0
-                for x in range(999999999999):
+                for x in range(10000):
                     counter += 1
 
             if(savedColor == None):
