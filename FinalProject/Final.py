@@ -306,8 +306,7 @@ try:
                     print("Entered Goal Area!")
                     inGoalArea = True  
             else:
-                print("Locating Goal Area")
-                motors = 5400
+                motors = 5200
                 tango.setTarget(BODY,body)
         
         if(inGoalArea == True):
