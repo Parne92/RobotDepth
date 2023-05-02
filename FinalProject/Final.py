@@ -194,8 +194,9 @@ try:
                 tango.setTarget(BODY,body)
                 firstLoop = False
                 print("AWAITING ICE")
-                for x in range(5000000):
-                    pass
+                counter  = 0
+                for x in range(999999999999):
+                    counter += 1
 
             if(savedColor == None):
                 yellow_mask = cv2.inRange(hsv, yellow_lower, yellow_upper)
