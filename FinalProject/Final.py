@@ -59,13 +59,13 @@ color_image = np.asanyarray(color_frame.get_data())
 face_cascade = cv2.CascadeClassifier('data/haarcascades/haarcascade_frontalface_default.xml')
 
 yellow_lower = np.array([30, 150, 140], np.uint8)
-yellow_upper = np.array([40, 150, 255], np.uint8)
+yellow_upper = np.array([40, 150, 256], np.uint8)
 
 green_lower = np.array([55, 120, 170], np.uint8)
-green_upper = np.array([67, 160,255], np.uint8)
+green_upper = np.array([67, 160,256], np.uint8)
 
 pink_lower = np.array([160, 130, 170], np.uint8)
-pink_upper = np.array([175, 230, 255], np.uint8)
+pink_upper = np.array([175, 230, 256], np.uint8)
 
 orange_lower = np.array([0, 200, 20], np.uint8)
 orange_upper = np.array([60, 255, 255], np.uint8)
@@ -94,11 +94,6 @@ try:
         depth_colormap_dim = depth_colormap.shape
         color_colormap_dim = color_image.shape
 
-        if depth_colormap_dim != color_colormap_dim:
-            resized_color_image = cv2.resize(color_image, dsize=(depth_colormap_dim[1], depth_colormap_dim[0]), interpolation=cv2.INTER_AREA)
-            images = np.hstack((resized_color_image, depth_colormap))
-        else:
-            images = np.hstack((color_image, depth_colormap))
         hsv = cv2.cvtColor(color_image, cv2.COLOR_BGR2HSV)
 
         cv2.namedWindow('RobotVision', cv2.WINDOW_AUTOSIZE)
